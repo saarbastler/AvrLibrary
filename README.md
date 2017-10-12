@@ -1,0 +1,3 @@
+# C++ template libraray for AVR
+
+to be done ...
