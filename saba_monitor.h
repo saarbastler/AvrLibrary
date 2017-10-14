@@ -54,7 +54,7 @@ namespace SABA
         else if( mode == 'r' )
         {
           mode= MODE_RESET;
-          b= ~(1 << (7 & b));
+          b= 1 << (7 & b);
         }
         else if( mode == '=' )
         {
@@ -62,7 +62,7 @@ namespace SABA
         }
         else
         {
-          mode= 0;
+          return false;
         }
       }
 
@@ -136,6 +136,18 @@ namespace SABA
       return true;
     }
 
+
+    static bool adc(CmdReader<INDEX_TYPE,BUFFER_SIZE>& cmdReader)
+    {
+      OStream<putch> ostr;
+
+      ostr << PSTR("ADMUX:  ") << hex << ADMUX << endl
+      << PSTR("ADCSRA: ") << ADCSRA << endl
+      << PSTR("ADC:    ") << ADC << endl;
+
+      return true;
+    }
+
   protected:
     static constexpr uint8_t MODE_SETBIT = 1;
     static constexpr uint8_t MODE_RESET = 2;
@@ -176,7 +188,6 @@ namespace SABA
         << PSTR(" PORT") << pch << ':' << port8.port()
         << endl;
     }
-
   };
 }
 
