@@ -34,7 +34,7 @@ namespace SABA
       SFREG<_UBRRL> ubrrl;
       SFREG<_UBRRH> ubrrh;
 
-      ubrrl= ubrr & 0xff;
+      ubrrl= (uint8_t)ubrr & (uint8_t)0xff;
       ubrrh= ubrr >> 8;
       ucsra= 0;
       ucsrb= _BV(RXEN)|_BV(TXEN);
