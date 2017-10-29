@@ -21,28 +21,9 @@ namespace SABA
   // Address of Special function Register
   typedef volatile uint16_t SFRA;
 
-  // Special Function Register 8 Bit or 16 Bit
-  /*template<typename TYPE,SFRA SFR_ADDRESS>
-  class _SFREG
-  {
-    public:
-    // read the SFR
-    TYPE operator () ()
-    {
-      return *(volatile TYPE *)SFR_ADDRESS;
-    }
-
-    // write the SFR
-    void operator =(TYPE value)
-    {
-      (*(volatile TYPE *)SFR_ADDRESS)= value;
-    }
-
-  };*/
-
   // Special Function Register
   template<SFRA SFR_ADDRESS>
-  class SFREG //: public _SFREG<uint8_t,SFR_ADDRESS>
+  class SFREG
   {
   public:
     // read the SFR
@@ -78,7 +59,7 @@ namespace SABA
 
   // 16 Bit Special Function Register
   template<SFRA SFR_ADDRESS>
-  class SFREG16 //: public _SFREG<uint16_t,SFR_ADDRESS>
+  class SFREG16
   {
   public:
     // read the SFR
@@ -187,7 +168,7 @@ namespace SABA
     {
       Port8<PIN_ADDR> port8;
 
-      return port8.pin & _BV(BIT_POS);
+      return port8.pin() & _BV(BIT_POS);
     }
 
     void operator= (bool value)
@@ -200,7 +181,7 @@ namespace SABA
         port8.port &= ~_BV(BIT_POS);
     }
 
-    void toggle()
+    PortPin& toggle()
     {
       Port8<PIN_ADDR> port8;
 
@@ -209,28 +190,36 @@ namespace SABA
 #else
       port8.port ^= _BV(BIT_POS);
 #endif
+
+      return *this;
     }
 
-    void asOutput()
+    PortPin& asOutput()
     {
       Port8<PIN_ADDR> port8;
 
       port8.ddr |= _BV(BIT_POS);
+
+      return *this;
     }
 
-    void asInput()
+    PortPin& asInput()
     {
       Port8<PIN_ADDR> port8;
 
       port8.ddr &= ~_BV(BIT_POS);
+
+      return *this;
     }
 
-    void asInputPullUp()
+    PortPin& asInputPullUp()
     {
       Port8<PIN_ADDR> port8;
 
       port8.ddr &= ~_BV(BIT_POS);
       *this = true;
+
+      return *this;
     }
   };
   
