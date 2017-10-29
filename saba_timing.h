@@ -37,16 +37,21 @@ namespace SABA
         mode= Running;
       }
 
+      bool isRunning()
+      {
+        return mode == Running;
+      }
+
       // is true only once, if the delay is done.
       // has to be started again after delay is done.
       bool operator()()
       {
-        if(mode == Done)
+        if(mode != Running)
         {
           return false;
         }
         
-        if( !(bool) mode)
+        if( mode == Running )
         {
           TYPE diff= ticker - startValue;
 
