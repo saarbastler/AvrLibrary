@@ -62,6 +62,13 @@ namespace SABA
         return *this;
       }
 
+      bool isOverflowInterruptEnabled()
+      {
+        SFRBIT<(SFRA)&TIMSK,TOIE1> bit;
+
+        return bit();
+      }
+
       Timer16& enableOutputCompAMatchInterrupt(bool enable)
       {
         SFRBIT<(SFRA)&TIMSK,OCIE1A> bit;
