@@ -80,6 +80,16 @@ namespace SABA
       return ((*pfn)(*this));
     }
 
+    OStream& operator<<( bool b )
+    {
+      if(b)
+        *this << PSTR("true");
+      else
+        *this << PSTR("false");
+
+      return *this;
+    }
+
     OStream& operator<<( uint8_t i )
     {
       if( (fmtflags & base) == hex )
