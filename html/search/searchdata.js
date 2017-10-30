@@ -1,27 +1,33 @@
 var indexSectionsWithContent =
 {
-  0: "acdimopstu",
+  0: "_acdeghimnoprstu",
   1: "acdimopstu",
-  2: "aot",
-  3: "dp",
-  4: "c"
+  2: "s",
+  3: "adeghnoprstu",
+  4: "dhp",
+  5: "_eps",
+  6: "c"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "functions",
-  3: "variables",
-  4: "pages"
+  2: "namespaces",
+  3: "functions",
+  4: "variables",
+  5: "typedefs",
+  6: "pages"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Functions",
-  3: "Variables",
-  4: "Pages"
+  2: "Namespaces",
+  3: "Functions",
+  4: "Variables",
+  5: "Typedefs",
+  6: "Pages"
 };
 

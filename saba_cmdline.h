@@ -16,13 +16,21 @@
 
 namespace SABA
 {
+  //! the execute function is called if the user send the line
   typedef bool EXECUTE(char c);
 
+  // \brief A command line buffer reader super class
+  /** 
+  A derived class has to fill the buffer. This class provides methods to read characters, hex numbers or decimal numbers.
+
+  @tparam INDEX_TYPE the index type, if the buffer size is < 256 use uint8_t, if >= 256 use uint16_t
+  @tparam BUFFER_SIZE the size of the buffer. Max number of chars in one line.
+  */
   template<typename INDEX_TYPE,INDEX_TYPE BUFFER_SIZE>
   class CmdReader
   {
     public:
-    char nextChar()
+    char nextChar() //! return the next character of the buffer. If no more character is available, return 0
     {
       char ch= 0;
       if( indexOut < BUFFER_SIZE )
@@ -35,7 +43,7 @@ namespace SABA
       return ch;
     }
 
-    char nextCharIgnoreBlank()
+    char nextCharIgnoreBlank() //! return the next character of the buffer. Blank and TAB is ignored. If no more character is available, return 0
     {
       char ch= nextChar();
       
@@ -45,7 +53,7 @@ namespace SABA
       return ch;
     }
 
-    template<typename T> T nextHex()
+    template<typename T> T nextHex() //! interpret the next characters as a hexadecimal number. If there is no hexadecimal character or the input is bigger than the variable, the error flag is set.
     {
       T result= 0;
       
@@ -78,7 +86,7 @@ namespace SABA
       return result;
     }
 
-    template<typename T> T nextDec()
+    template<typename T> T nextDec() //! interpret the next characters as a decimal number. If there is no decimal character or the input is bigger than the variable, the error flag is set.
     {
       T result= 0;
           
@@ -117,7 +125,7 @@ namespace SABA
       return result;
     }
 
-    bool operator () ()
+    bool operator () () //! return true, if there was no error in nextHex or nextDec function.
     {
       return !error;
     }
@@ -177,11 +185,21 @@ namespace SABA
     bool error;
   };
 
+  // \brief A command line buffer, typically used as serial input buffer
+  /** 
+  The user input from (typically) serial port is collected in a line. Backspace will delete the last character.
+  Enter will send the line to the EXECUTE function.
+  
+  @tparam INDEX_TYPE the index type, if the buffer size is < 256 use uint8_t, if >= 256 use uint16_t
+  @tparam BUFFER_SIZE the size of the buffer. Max number of chars in one line.
+  @tparam PUTCH The putch function receiving the output
+  @tparam EXECUTE The execute function called after Enter has been received. If function returns false an error message is printed.
+  */
   template<typename INDEX_TYPE,INDEX_TYPE BUFFER_SIZE, PUTCH putch, template<PUTCH putch> class OStream, EXECUTE execute>
   class CmdLine : public CmdReader<INDEX_TYPE, BUFFER_SIZE>
   {
   public:
-    void appendChar( char ch )
+    void appendChar( char ch ) //! used to add a character to the buffer. The character will be echoed to the putch function. Backspace will delete the last character in the buffer. Enter will call the EXECUTE function. If the buffer is full, the character is not stored and echoed.
     {
       OStream<putch> ostr;
 
@@ -205,6 +223,17 @@ namespace SABA
       }
     }
 
+    protected:
+
+    void printError( const char *string )
+    {
+      OStream<putch> ostr;
+      for(uint8_t i=1;i < CmdReader<INDEX_TYPE, BUFFER_SIZE>::indexOut; i++ )
+          ostr << '-';
+
+      ostr << '^' << endl << string << endl;
+    }
+
     void evaluateLine()
     {
       OStream<putch> ostr;
@@ -216,15 +245,6 @@ namespace SABA
 
       if(!execute(CmdReader<INDEX_TYPE, BUFFER_SIZE>::nextCharIgnoreBlank()))
         printError(PSTR("???"));
-    }
-
-    void printError( const char *string )
-    {
-      OStream<putch> ostr;
-      for(uint8_t i=1;i < CmdReader<INDEX_TYPE, BUFFER_SIZE>::indexOut; i++ )
-          ostr << '-';
-
-      ostr << '^' << endl << string << endl;
     }
 
     private:

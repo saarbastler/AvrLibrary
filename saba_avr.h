@@ -1,4 +1,4 @@
-/*
+/**
  * saba_avr.h
  *
  * Saarbastler AVR C++ 11 Library
@@ -253,7 +253,7 @@ namespace SABA
         port8.port &= ~_BV(BIT_POS);
     }
 
-    PortPin& toggle() //! toggle the output. Depending on the SUPPORTS_PIN_TOGGLE macro, the PIN is used or PORT is toggled
+    PortPin& toggle() //! toggle the output. Depending on the SUPPORTS_PIN_TOGGLE (see saba_controller.h) macro, the PIN is used or PORT is toggled
     {
       Port8<PIN_ADDR> port8;
 

@@ -19,12 +19,28 @@
 
 namespace SABA
 {
+
+  // \brief Usart controlling class
+  /** 
+  The Usart template class is used to control an AVR Usart. There are predefined typedefs USARTx in saba_controller.h
+  @tparam _UDR the UDR SFR address
+  @tparam _UCSRA the UCSRA address
+  @tparam _UCSRB the UCSRB address
+  @tparam _UCSRC the UCSRC address
+  @tparam _UBRRL the UBRRL address
+  @tparam _UBRRH the UBRRH address
+
+  Usage:
+  ~~~{.c}
+  SABA::USART0 usart(19200);  // use one of the defined typedefs
+  ~~~ 
+  */
   template <SFRA _UDR,SFRA _UCSRA,SFRA _UCSRB,SFRA _UCSRC,SFRA _UBRRL,SFRA _UBRRH>
   class Usart
   {
   public:
 
-    Usart(uint32_t baudrate)
+    Usart(uint32_t baudrate)  //! initializes the Usart using the desired baudrate
     {
       uint16_t ubrr= (uint16_t)(.5 + F_CPU / (baudrate * 16))-1;
 
@@ -46,25 +62,22 @@ namespace SABA
       ucsrc= _BV(UCSZ0) | _BV(UCSZ1);
 #endif
     }
-
-    // test, if transmit was completed
-    bool transmitComplete()
+    
+    bool transmitComplete() //! return true, if the last transmit was completed
     {
       SFRBIT<_UCSRA,TXC> txc;
 
       return txc();
     }
-
-    // test, if the data register is empty. If true the next char can be written
-    bool readyToSend()
+    
+    bool readyToSend() //! return true, if the data register is empty, the next char can be written
     {
       SFRBIT<_UCSRA,UDRE> udre;
 
       return udre();
     }
-
-    // waits until data register is empty and transmits 
-    void putch( uint8_t ch )
+    
+    void putch( uint8_t ch ) //! waits until data register is empty and transmits the byte
     {
       while(! readyToSend())
         ;
@@ -72,17 +85,15 @@ namespace SABA
       SFREG<_UDR> udr;
       udr= ch;
     }
-
-    // test, if data has been received complete, the data register can be read
-    bool receiverComplete()
+    
+    bool receiverComplete() //! return true, if data has been received complete, the data register can be read
     {
       SFRBIT<_UCSRA,RXC> rxc;
 
       return rxc();
     }
-
-    // wait until a receive was completed, then return the received char
-    uint8_t getch()
+    
+    uint8_t getch() //! wait until a receive was completed, then return the received char
     {
       while(!receiverComplete())
         ;
@@ -95,9 +106,11 @@ namespace SABA
 
 
 #ifdef UDR
+  //! Atmega 8 
   typedef Usart<(SFRA)&UDR,(SFRA)&UCSRA,(SFRA)&UCSRB,(SFRA)&UCSRC,(SFRA)&UBRRL,(SFRA)&UBRRH> USART0;
 #endif
 #ifdef UDR0
+  //! Atmega xx8
   typedef Usart<(SFRA)&UDR0,(SFRA)&UCSRA0,(SFRA)&UCSRB0,(SFRA)&UCSRC0,(SFRA)&UBRRL0,(SFRA)&UBRRH0> USART0;
 #endif
 }
