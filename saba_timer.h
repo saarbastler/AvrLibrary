@@ -37,18 +37,18 @@ namespace SABA
     public:
       Timer16& waveformGenerationMode(WaveformGenerationMode m)
       {
-        SFRBITS<_TCCRA,_BV(WGM10)|_BV(WGM11)> w01;
-        SFRBITS<_TCCRB,_BV(WGM12)|_BV(WGM13)> w23;
+        SFRBITS<_TCCRA,_BV(WGM10)|_BV(WGM11),WGM10> w01;
+        SFRBITS<_TCCRB,_BV(WGM12)|_BV(WGM13),WGM12> w23;
 
         w01 = m & 3;
-        w23 = (m & 0x0c) << WGM12;
+        w23 = m & 0x0c;
 
         return *this;
       }
 
       Timer16& clockSelect(ClockSelect c)
       {
-        SFRBITS<_TCCRB,_BV(CS10)|_BV(CS11)|_BV(CS12)> c012;
+        SFRBITS<_TCCRB,_BV(CS10)|_BV(CS11)|_BV(CS12),CS10> c012;
         c012 = c;
 
         return *this;
@@ -110,7 +110,7 @@ namespace SABA
 
       Timer8& clockSelect(ClockSelect c)
       {
-        SFRBITS<_TCCR,_BV(CS00)|_BV(CS01)|_BV(CS02)> c012;
+        SFRBITS<_TCCR,_BV(CS00)|_BV(CS01)|_BV(CS02),CS00> c012;
         c012 = c;
 
         return *this;

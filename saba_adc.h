@@ -36,7 +36,7 @@ namespace SABA
   
     Adc& reference(Analog::Reference c)  
     {
-      SFRBITS<_ADMUX,_BV(REFS1)|_BV(REFS0)> ref;
+      SFRBITS<_ADMUX,_BV(REFS1)|_BV(REFS0),REFS0> ref;
 
       ref= c << REFS0;
 
@@ -54,7 +54,7 @@ namespace SABA
 
     Adc& multiplexer(uint8_t channel)
     {
-      SFRBITS<_ADMUX,_BV(MUX3)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0)> ref;
+      SFRBITS<_ADMUX,_BV(MUX3)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0),MUX0> ref;
 
       ref= channel << MUX0;
 
@@ -103,7 +103,7 @@ namespace SABA
 
     Adc& prescaler( Analog::Prescaler p)
     {
-      SFRBITS<_ADCSRA,_BV(ADPS2)|_BV(ADPS1)|_BV(ADPS0)> prescale;
+      SFRBITS<_ADCSRA,_BV(ADPS2)|_BV(ADPS1)|_BV(ADPS0),ADPS0> prescale;
 
       prescale= p << ADPS0;
 
@@ -147,7 +147,7 @@ namespace SABA
 
     uint8_t getChannel()
     {
-      SFRBITS<_ADMUX,_BV(MUX3)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0)> ref;
+      SFRBITS<_ADMUX,_BV(MUX3)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0),MUX0> ref;
 
       return ref() >> MUX0;
     }
