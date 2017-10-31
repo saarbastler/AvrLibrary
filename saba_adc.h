@@ -38,7 +38,7 @@ namespace SABA
     {
       SFRBITS<_ADMUX,_BV(REFS1)|_BV(REFS0),REFS0> ref;
 
-      ref= c << REFS0;
+      ref= c;
 
       return *this;
     }
@@ -56,7 +56,7 @@ namespace SABA
     {
       SFRBITS<_ADMUX,_BV(MUX3)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0),MUX0> ref;
 
-      ref= channel << MUX0;
+      ref= channel;
 
       return *this;
     }
@@ -105,7 +105,7 @@ namespace SABA
     {
       SFRBITS<_ADCSRA,_BV(ADPS2)|_BV(ADPS1)|_BV(ADPS0),ADPS0> prescale;
 
-      prescale= p << ADPS0;
+      prescale= p;
 
       return *this;
     }
@@ -149,7 +149,7 @@ namespace SABA
     {
       SFRBITS<_ADMUX,_BV(MUX3)|_BV(MUX2)|_BV(MUX1)|_BV(MUX0),MUX0> ref;
 
-      return ref() >> MUX0;
+      return ref();
     }
 
     uint16_t operator() ()
