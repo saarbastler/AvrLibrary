@@ -162,7 +162,7 @@ namespace SABA
     {
       SFREG<SFR_ADDRESS> sfr;
 
-      sfr= (sfr() & ~BIT_MASK) | ((value & BIT_MASK) << BIT_SHIFT);
+      sfr= (sfr() & ~BIT_MASK) | ((value << BIT_SHIFT) & BIT_MASK);
     }
     
     void operator |=(uint8_t value) //! or the bits with a value
