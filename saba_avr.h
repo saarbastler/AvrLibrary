@@ -250,7 +250,7 @@ namespace SABA
       if(value)
         port8.port |= _BV(BIT_POS);
       else
-        port8.port &= ~_BV(BIT_POS);
+        port8.port &= (uint8_t)~_BV(BIT_POS);
     }
 
     PortPin& toggle() //! toggle the output. Depending on the SUPPORTS_PIN_TOGGLE (see saba_controller.h) macro, the PIN is used or PORT is toggled
