@@ -35,7 +35,8 @@ namespace SABA
   SABA::USART0 usart(19200);  // use one of the defined typedefs
   ~~~ 
   */
-  template <SFRA _UDR,SFRA _UCSRA,SFRA _UCSRB,SFRA _UCSRC,SFRA _UBRRL,SFRA _UBRRH>
+  template <SFRA _UDR,SFRA _UCSRA,SFRA _UCSRB,SFRA _UCSRC,SFRA _UBRRL,SFRA _UBRRH
+  ,uint8_t _RXEN,uint8_t _TXEN,uint8_t _UCSZ0,uint8_t _UCSZ1,uint8_t _TXC,uint8_t _RXC,uint8_t _UDRE>
   class Usart
   {
   public:
@@ -53,26 +54,26 @@ namespace SABA
       ubrrl= (uint8_t)ubrr & (uint8_t)0xff;
       ubrrh= ubrr >> 8;
       ucsra= 0;
-      ucsrb= _BV(RXEN)|_BV(TXEN);
+      ucsrb= _BV(_RXEN)|_BV(_TXEN);
 
 // Atmega 8
 #ifdef URSEL
       ucsrc= _BV(URSEL) | _BV(UCSZ0) | _BV(UCSZ1);
 #else
-      ucsrc= _BV(UCSZ0) | _BV(UCSZ1);
+      ucsrc= _BV(_UCSZ0) | _BV(_UCSZ1);
 #endif
     }
     
     bool transmitComplete() //! return true, if the last transmit was completed
     {
-      SFRBIT<_UCSRA,TXC> txc;
+      SFRBIT<_UCSRA,_TXC> txc;
 
       return txc();
     }
     
     bool readyToSend() //! return true, if the data register is empty, the next char can be written
     {
-      SFRBIT<_UCSRA,UDRE> udre;
+      SFRBIT<_UCSRA,_UDRE> udre;
 
       return udre();
     }
@@ -88,7 +89,7 @@ namespace SABA
     
     bool receiverComplete() //! return true, if data has been received complete, the data register can be read
     {
-      SFRBIT<_UCSRA,RXC> rxc;
+      SFRBIT<_UCSRA,_RXC> rxc;
 
       return rxc();
     }
@@ -107,11 +108,11 @@ namespace SABA
 
 #ifdef UDR
   //! Atmega 8 
-  typedef Usart<(SFRA)&UDR,(SFRA)&UCSRA,(SFRA)&UCSRB,(SFRA)&UCSRC,(SFRA)&UBRRL,(SFRA)&UBRRH> USART0;
+  typedef Usart<(SFRA)&UDR,(SFRA)&UCSRA,(SFRA)&UCSRB,(SFRA)&UCSRC,(SFRA)&UBRRL,(SFRA)&UBRRH,RXEN,TXEN,UCSZ0,UCSZ1,TXC,RXC,UDRE> USART0;
 #endif
 #ifdef UDR0
   //! Atmega xx8
-  typedef Usart<(SFRA)&UDR0,(SFRA)&UCSRA0,(SFRA)&UCSRB0,(SFRA)&UCSRC0,(SFRA)&UBRRL0,(SFRA)&UBRRH0> USART0;
+  typedef Usart<(SFRA)&UDR0,(SFRA)&UCSR0A,(SFRA)&UCSR0B,(SFRA)&UCSR0C,(SFRA)&UBRR0L,(SFRA)&UBRR0H,RXEN0,TXEN0,UCSZ00,UCSZ01,TXC0,RXC0,UDRE0> USART0;
 #endif
 }
 
