@@ -148,6 +148,16 @@ namespace SABA
       return true;
     }
 
+    static bool spi(CmdReader<INDEX_TYPE,BUFFER_SIZE>& cmdReader)
+    {
+      OStream<putch> ostr;
+
+      ostr << PSTR("SPCR: ") << hex << SPCR << endl
+      << PSTR("SPSR: ") << SPSR << endl;
+
+      return true;
+    }
+
   protected:
     static constexpr uint8_t MODE_SETBIT = 1;
     static constexpr uint8_t MODE_RESET = 2;

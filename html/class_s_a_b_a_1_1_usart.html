@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Saarbastler&#39;s C++ 11 Avr Library: SABA::Usart&lt; _UDR, _UCSRA, _UCSRB, _UCSRC, _UBRRL, _UBRRH &gt; Class Template Reference</title>
+<title>Saarbastler&#39;s C++ 11 Avr Library: SABA::Usart&lt; _UDR, _UCSRA, _UCSRB, _UCSRC, _UBRRL, _UBRRH, _RXEN, _TXEN, _UCSZ0, _UCSZ1, _TXC, _RXC, _UDRE &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,7 +66,7 @@ $(function() {
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_s_a_b_a_1_1_usart-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SABA::Usart&lt; _UDR, _UCSRA, _UCSRB, _UCSRC, _UBRRL, _UBRRH &gt; Class Template Reference</div>  </div>
+<div class="title">SABA::Usart&lt; _UDR, _UCSRA, _UCSRB, _UCSRC, _UBRRL, _UBRRH, _RXEN, _TXEN, _UCSZ0, _UCSZ1, _TXC, _RXC, _UDRE &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -74,34 +74,34 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a0d17f887f128134d3eabb0a3f7cf7811"><td class="memItemLeft" align="right" valign="top"><a id="a0d17f887f128134d3eabb0a3f7cf7811"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#a0d17f887f128134d3eabb0a3f7cf7811">Usart</a> (uint32_t baudrate)</td></tr>
-<tr class="memdesc:a0d17f887f128134d3eabb0a3f7cf7811"><td class="mdescLeft">&#160;</td><td class="mdescRight">initializes the <a class="el" href="class_s_a_b_a_1_1_usart.html">Usart</a> using the desired baudrate <br /></td></tr>
-<tr class="separator:a0d17f887f128134d3eabb0a3f7cf7811"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4d9efd9ac1a13c5fcc799dde370dd6a"><td class="memItemLeft" align="right" valign="top"><a id="aa4d9efd9ac1a13c5fcc799dde370dd6a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#aa4d9efd9ac1a13c5fcc799dde370dd6a">transmitComplete</a> ()</td></tr>
-<tr class="memdesc:aa4d9efd9ac1a13c5fcc799dde370dd6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true, if the last transmit was completed <br /></td></tr>
-<tr class="separator:aa4d9efd9ac1a13c5fcc799dde370dd6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8434a34818404c673a7ba570fefdef3a"><td class="memItemLeft" align="right" valign="top"><a id="a8434a34818404c673a7ba570fefdef3a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#a8434a34818404c673a7ba570fefdef3a">readyToSend</a> ()</td></tr>
-<tr class="memdesc:a8434a34818404c673a7ba570fefdef3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true, if the data register is empty, the next char can be written <br /></td></tr>
-<tr class="separator:a8434a34818404c673a7ba570fefdef3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a947e0f86af337644e3ef466401ea52c2"><td class="memItemLeft" align="right" valign="top"><a id="a947e0f86af337644e3ef466401ea52c2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#a947e0f86af337644e3ef466401ea52c2">putch</a> (uint8_t ch)</td></tr>
-<tr class="memdesc:a947e0f86af337644e3ef466401ea52c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">waits until data register is empty and transmits the byte <br /></td></tr>
-<tr class="separator:a947e0f86af337644e3ef466401ea52c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae13445567404288af3e3d32c5483d290"><td class="memItemLeft" align="right" valign="top"><a id="ae13445567404288af3e3d32c5483d290"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#ae13445567404288af3e3d32c5483d290">receiverComplete</a> ()</td></tr>
-<tr class="memdesc:ae13445567404288af3e3d32c5483d290"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true, if data has been received complete, the data register can be read <br /></td></tr>
-<tr class="separator:ae13445567404288af3e3d32c5483d290"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8741dd81c32ceca21ad903a90418b63"><td class="memItemLeft" align="right" valign="top"><a id="af8741dd81c32ceca21ad903a90418b63"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#af8741dd81c32ceca21ad903a90418b63">getch</a> ()</td></tr>
-<tr class="memdesc:af8741dd81c32ceca21ad903a90418b63"><td class="mdescLeft">&#160;</td><td class="mdescRight">wait until a receive was completed, then return the received char <br /></td></tr>
-<tr class="separator:af8741dd81c32ceca21ad903a90418b63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1967fc5b4deaa6415915c183368dd67"><td class="memItemLeft" align="right" valign="top"><a id="ac1967fc5b4deaa6415915c183368dd67"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#ac1967fc5b4deaa6415915c183368dd67">Usart</a> (uint32_t baudrate)</td></tr>
+<tr class="memdesc:ac1967fc5b4deaa6415915c183368dd67"><td class="mdescLeft">&#160;</td><td class="mdescRight">initializes the <a class="el" href="class_s_a_b_a_1_1_usart.html">Usart</a> using the desired baudrate <br /></td></tr>
+<tr class="separator:ac1967fc5b4deaa6415915c183368dd67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a101bfc1543d9fe490ed138741e2e4b6e"><td class="memItemLeft" align="right" valign="top"><a id="a101bfc1543d9fe490ed138741e2e4b6e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#a101bfc1543d9fe490ed138741e2e4b6e">transmitComplete</a> ()</td></tr>
+<tr class="memdesc:a101bfc1543d9fe490ed138741e2e4b6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true, if the last transmit was completed <br /></td></tr>
+<tr class="separator:a101bfc1543d9fe490ed138741e2e4b6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe01c062f2d6743e0bb233667f8ce50b"><td class="memItemLeft" align="right" valign="top"><a id="abe01c062f2d6743e0bb233667f8ce50b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#abe01c062f2d6743e0bb233667f8ce50b">readyToSend</a> ()</td></tr>
+<tr class="memdesc:abe01c062f2d6743e0bb233667f8ce50b"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true, if the data register is empty, the next char can be written <br /></td></tr>
+<tr class="separator:abe01c062f2d6743e0bb233667f8ce50b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b251b9a54b262adfa4dcd779ecc130b"><td class="memItemLeft" align="right" valign="top"><a id="a3b251b9a54b262adfa4dcd779ecc130b"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#a3b251b9a54b262adfa4dcd779ecc130b">putch</a> (uint8_t ch)</td></tr>
+<tr class="memdesc:a3b251b9a54b262adfa4dcd779ecc130b"><td class="mdescLeft">&#160;</td><td class="mdescRight">waits until data register is empty and transmits the byte <br /></td></tr>
+<tr class="separator:a3b251b9a54b262adfa4dcd779ecc130b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae26da17303dfa0060b2f0a909249f55e"><td class="memItemLeft" align="right" valign="top"><a id="ae26da17303dfa0060b2f0a909249f55e"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#ae26da17303dfa0060b2f0a909249f55e">receiverComplete</a> ()</td></tr>
+<tr class="memdesc:ae26da17303dfa0060b2f0a909249f55e"><td class="mdescLeft">&#160;</td><td class="mdescRight">return true, if data has been received complete, the data register can be read <br /></td></tr>
+<tr class="separator:ae26da17303dfa0060b2f0a909249f55e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c763230969cb37f99e2629da27f43d7"><td class="memItemLeft" align="right" valign="top"><a id="a5c763230969cb37f99e2629da27f43d7"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_usart.html#a5c763230969cb37f99e2629da27f43d7">getch</a> ()</td></tr>
+<tr class="memdesc:a5c763230969cb37f99e2629da27f43d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">wait until a receive was completed, then return the received char <br /></td></tr>
+<tr class="separator:a5c763230969cb37f99e2629da27f43d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;SFRA _UDR, SFRA _UCSRA, SFRA _UCSRB, SFRA _UCSRC, SFRA _UBRRL, SFRA _UBRRH&gt;<br />
-class SABA::Usart&lt; _UDR, _UCSRA, _UCSRB, _UCSRC, _UBRRL, _UBRRH &gt;</h3>
+<div class="textblock"><h3>template&lt;SFRA _UDR, SFRA _UCSRA, SFRA _UCSRB, SFRA _UCSRC, SFRA _UBRRL, SFRA _UBRRH, uint8_t _RXEN, uint8_t _TXEN, uint8_t _UCSZ0, uint8_t _UCSZ1, uint8_t _TXC, uint8_t _RXC, uint8_t _UDRE&gt;<br />
+class SABA::Usart&lt; _UDR, _UCSRA, _UCSRB, _UCSRC, _UBRRL, _UBRRH, _RXEN, _TXEN, _UCSZ0, _UCSZ1, _TXC, _RXC, _UDRE &gt;</h3>
 
 <p>The <a class="el" href="class_s_a_b_a_1_1_usart.html">Usart</a> template class is used to control an AVR <a class="el" href="class_s_a_b_a_1_1_usart.html">Usart</a>. There are predefined typedefs USARTx in <a class="el" href="saba__controller_8h_source.html">saba_controller.h</a> </p><dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">

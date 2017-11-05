@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.13"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Saarbastler&#39;s C++ 11 Avr Library: SABA::Timer::Timer16&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK &gt; Class Template Reference</title>
+<title>Saarbastler&#39;s C++ 11 Avr Library: SABA::Timer::Timer16&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -58,7 +58,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespace_s_a_b_a.html">SABA</a></li><li class="navelem"><b>Timer</b></li><li class="navelem"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespace_s_a_b_a.html">SABA</a></li><li class="navelem"><a class="el" href="namespace_s_a_b_a_1_1_timer.html">Timer</a></li><li class="navelem"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -67,53 +67,368 @@ $(function() {
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_s_a_b_a_1_1_timer_1_1_timer16-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">SABA::Timer::Timer16&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK &gt; Class Template Reference</div>  </div>
+<div class="title">SABA::Timer::Timer16&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="saba__timer_8h_source.html">saba_timer.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af75f612b69fba07d8774845a9c12973d"><td class="memItemLeft" align="right" valign="top"><a id="af75f612b69fba07d8774845a9c12973d"></a>
-<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>waveformGenerationMode</b> (WaveformGenerationMode m)</td></tr>
-<tr class="separator:af75f612b69fba07d8774845a9c12973d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24fb740a1f562705562a6c3de454654b"><td class="memItemLeft" align="right" valign="top"><a id="a24fb740a1f562705562a6c3de454654b"></a>
-<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>clockSelect</b> (ClockSelect c)</td></tr>
-<tr class="separator:a24fb740a1f562705562a6c3de454654b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31c75fe84c899a4d7a1c1de35e310a6c"><td class="memItemLeft" align="right" valign="top"><a id="a31c75fe84c899a4d7a1c1de35e310a6c"></a>
-<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>enableOverflowInterrupt</b> (bool enable)</td></tr>
-<tr class="separator:a31c75fe84c899a4d7a1c1de35e310a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1442b39534d45f2cdc73a48aa2706897"><td class="memItemLeft" align="right" valign="top"><a id="a1442b39534d45f2cdc73a48aa2706897"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isOverflowInterruptEnabled</b> ()</td></tr>
-<tr class="separator:a1442b39534d45f2cdc73a48aa2706897"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4bbd381fcf9827893b2512b9d245fb9"><td class="memItemLeft" align="right" valign="top"><a id="ac4bbd381fcf9827893b2512b9d245fb9"></a>
-<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>enableOutputCompAMatchInterrupt</b> (bool enable)</td></tr>
-<tr class="separator:ac4bbd381fcf9827893b2512b9d245fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1dce0daf73fba32392aed89c85e06f82"><td class="memItemLeft" align="right" valign="top"><a id="a1dce0daf73fba32392aed89c85e06f82"></a>
-<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>enableOutputCompBMatchInterrupt</b> (bool enable)</td></tr>
-<tr class="separator:a1dce0daf73fba32392aed89c85e06f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf21a2a20884ac34b8354b11b5f4c8e1"><td class="memItemLeft" align="right" valign="top"><a id="adf21a2a20884ac34b8354b11b5f4c8e1"></a>
-<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>enableInputCaptureInterrupt</b> (bool enable)</td></tr>
-<tr class="separator:adf21a2a20884ac34b8354b11b5f4c8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefe36ef29722f8b0c88881aecb732d73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#aefe36ef29722f8b0c88881aecb732d73">waveformGenerationMode</a> (<a class="el" href="namespace_s_a_b_a_1_1_timer.html#abe02660c2a05e50d60df441474268418">WaveformGenerationMode</a> m)</td></tr>
+<tr class="separator:aefe36ef29722f8b0c88881aecb732d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f64d241432d77084b45d187fd670dcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#a4f64d241432d77084b45d187fd670dcd">clockSelect</a> (<a class="el" href="namespace_s_a_b_a_1_1_timer.html#a52e11147b7bac81d075265a1f919b323">ClockSelect</a> c)</td></tr>
+<tr class="separator:a4f64d241432d77084b45d187fd670dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a304eca682a760480f71cdab917709cf2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#a304eca682a760480f71cdab917709cf2">enableOverflowInterrupt</a> (bool enable)</td></tr>
+<tr class="separator:a304eca682a760480f71cdab917709cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2942f484e5dc3dc4e890e96eb1c3cdc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#aa2942f484e5dc3dc4e890e96eb1c3cdc">isOverflowInterruptEnabled</a> ()</td></tr>
+<tr class="separator:aa2942f484e5dc3dc4e890e96eb1c3cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34d175db4854b56a9822fc7d27cd172b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#a34d175db4854b56a9822fc7d27cd172b">enableOutputCompAMatchInterrupt</a> (bool enable)</td></tr>
+<tr class="separator:a34d175db4854b56a9822fc7d27cd172b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5a3e216215e7abb87ca1d5050210754"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#ab5a3e216215e7abb87ca1d5050210754">enableOutputCompBMatchInterrupt</a> (bool enable)</td></tr>
+<tr class="separator:ab5a3e216215e7abb87ca1d5050210754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad675134f5ed138b730627340f338003c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#ad675134f5ed138b730627340f338003c">enableInputCaptureInterrupt</a> (bool enable)</td></tr>
+<tr class="separator:ad675134f5ed138b730627340f338003c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdd110816990f607edea309ee4a47d0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#accdd110816990f607edea309ee4a47d0">operator()</a> ()</td></tr>
+<tr class="separator:accdd110816990f607edea309ee4a47d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8104a0bdfee279beb14210859be20a35"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#a8104a0bdfee279beb14210859be20a35">operator=</a> (uint16_t value)</td></tr>
+<tr class="separator:a8104a0bdfee279beb14210859be20a35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a3dc8971eafd5e75718b58704e1d76a61"><td class="memItemLeft" ><a id="a3dc8971eafd5e75718b58704e1d76a61"></a>
+<tr class="memitem:afbf8ed97151c7774ba5b54ae258887b1"><td class="memItemLeft" ><a id="afbf8ed97151c7774ba5b54ae258887b1"></a>
 union {</td></tr>
-<tr class="memitem:a86c8c57c5c0a0660830bf8b69e014333"><td class="memItemLeft" >
+<tr class="memitem:a957c8a704ede41295d78653a4230fb7c"><td class="memItemLeft" >
 &#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_s_f_r_e_g16.html">SFREG16</a>&lt; _TCNT &gt;&#160;&#160;&#160;<b>tcnt</b></td></tr>
-<tr class="separator:a86c8c57c5c0a0660830bf8b69e014333"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb317e791be215b3e4da4eea1102c279"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_s_f_r_e_g16.html">SFREG16</a>&lt; _OCRA &gt;&#160;&#160;&#160;<b>ocra</b></td></tr>
-<tr class="separator:abb317e791be215b3e4da4eea1102c279"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a994440cab682400a2c52a6a427d746a2"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_s_f_r_e_g16.html">SFREG16</a>&lt; _OCRB &gt;&#160;&#160;&#160;<b>ocrb</b></td></tr>
-<tr class="separator:a994440cab682400a2c52a6a427d746a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6e0651bc4552aba534d8a6d02da7a96"><td class="memItemLeft" >
-&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_s_f_r_e_g16.html">SFREG16</a>&lt; _ICR &gt;&#160;&#160;&#160;<b>icr</b></td></tr>
-<tr class="separator:ac6e0651bc4552aba534d8a6d02da7a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dc8971eafd5e75718b58704e1d76a61"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
-<tr class="separator:a3dc8971eafd5e75718b58704e1d76a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a957c8a704ede41295d78653a4230fb7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad83171d24609f3dac84823615294fbeb"><td class="memItemLeft" >
+&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_s_f_r_e_g16.html">SFREG16</a>&lt; _OCRA &gt;&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#add3f898c813dffbaa5d70ddb292f5f5f">ocra</a></td></tr>
+<tr class="memdesc:ad83171d24609f3dac84823615294fbeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">direct access to the TCNT register <br /></td></tr>
+<tr class="separator:ad83171d24609f3dac84823615294fbeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55ae9cea7d5eb5b8cfd5551e1aa0b558"><td class="memItemLeft" >
+&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_s_f_r_e_g16.html">SFREG16</a>&lt; _OCRB &gt;&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#a6cad491703d1bd37f29eaede49aff3eb">ocrb</a></td></tr>
+<tr class="memdesc:a55ae9cea7d5eb5b8cfd5551e1aa0b558"><td class="mdescLeft">&#160;</td><td class="mdescRight">direct access to the OCRA register <br /></td></tr>
+<tr class="separator:a55ae9cea7d5eb5b8cfd5551e1aa0b558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeac5005275ba1f34b160b363cc0ca6b"><td class="memItemLeft" >
+&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_s_f_r_e_g16.html">SFREG16</a>&lt; _ICR &gt;&#160;&#160;&#160;<a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html#ad0a217ecc642780e6b352d769d9ca9f7">icr</a></td></tr>
+<tr class="memdesc:afeac5005275ba1f34b160b363cc0ca6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">direct access to the OCRB register <br /></td></tr>
+<tr class="separator:afeac5005275ba1f34b160b363cc0ca6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbf8ed97151c7774ba5b54ae258887b1"><td class="memItemLeft" valign="top">};&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:afbf8ed97151c7774ba5b54ae258887b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt;<br />
+class SABA::Timer::Timer16&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;</h3>
+
+<p>A template class to access a 16 Bit AVR <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a></p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">_TCCRA</td><td>the TCCRA address </td></tr>
+    <tr><td class="paramname">_TCCRB</td><td>the TCCRB address </td></tr>
+    <tr><td class="paramname">_TCNT</td><td>the TCCRC address </td></tr>
+    <tr><td class="paramname">_OCRA</td><td>the OCRA address </td></tr>
+    <tr><td class="paramname">_OCRB</td><td>the OCRB address </td></tr>
+    <tr><td class="paramname">_ICR</td><td>the ICR address </td></tr>
+    <tr><td class="paramname">_TIMSK</td><td>the TIMSK address</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Usage: </p><div class="fragment"><div class="line">SABA::Timer::Timer1 timer1; <span class="comment">// use the typedef instead of the template will save space</span></div><div class="line"></div><div class="line">timer1</div><div class="line">  .waveformGenerationMode(<a class="code" href="namespace_s_a_b_a_1_1_timer.html#abe02660c2a05e50d60df441474268418a416f82f1395cdeda84ef8f2062909f69">SABA::Timer::Normal</a>)</div><div class="line">  .clockSelect(<a class="code" href="namespace_s_a_b_a_1_1_timer.html#a52e11147b7bac81d075265a1f919b323a25c5ddd4971f1287029b30385d871c64">SABA::Timer::By8</a>);</div></div><!-- fragment --> </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4f64d241432d77084b45d187fd670dcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f64d241432d77084b45d187fd670dcd">&#9670;&nbsp;</a></span>clockSelect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a>&amp; <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::clockSelect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_s_a_b_a_1_1_timer.html#a52e11147b7bac81d075265a1f919b323">ClockSelect</a>&#160;</td>
+          <td class="paramname"><em>c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>set <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a> clock selection </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the ClockSelect enum constant, see also the CSxx bits in TCCRxx register description </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the this object for creating fluent calls </dd></dl>
+
+</div>
+</div>
+<a id="ad675134f5ed138b730627340f338003c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad675134f5ed138b730627340f338003c">&#9670;&nbsp;</a></span>enableInputCaptureInterrupt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a>&amp; <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::enableInputCaptureInterrupt </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>enable or disable the <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a> Input Capture interrupt </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable,if</td><td>true, enable the Input Capture interrupt, if false disable the Input Capture interrupt </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the this object for creating fluent calls </dd></dl>
+
+</div>
+</div>
+<a id="a34d175db4854b56a9822fc7d27cd172b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34d175db4854b56a9822fc7d27cd172b">&#9670;&nbsp;</a></span>enableOutputCompAMatchInterrupt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a>&amp; <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::enableOutputCompAMatchInterrupt </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>enable or disable the <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a> Comparator A match interrupt </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable,if</td><td>true, enable the Comparator A match interrupt, if false disable the Comparator A match interrupt </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the this object for creating fluent calls </dd></dl>
+
+</div>
+</div>
+<a id="ab5a3e216215e7abb87ca1d5050210754"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5a3e216215e7abb87ca1d5050210754">&#9670;&nbsp;</a></span>enableOutputCompBMatchInterrupt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a>&amp; <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::enableOutputCompBMatchInterrupt </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>enable or disable the <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a> Comparator B match interrupt </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable,if</td><td>true, enable the Comparator B match interrupt, if false disable the Comparator B match interrupt </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the this object for creating fluent calls </dd></dl>
+
+</div>
+</div>
+<a id="a304eca682a760480f71cdab917709cf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a304eca682a760480f71cdab917709cf2">&#9670;&nbsp;</a></span>enableOverflowInterrupt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a>&amp; <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::enableOverflowInterrupt </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>enable or disable the <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a> overflow interrupt </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable,if</td><td>true, enable the overflow interrupt, if false disable the overflow interrupt </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the this object for creating fluent calls </dd></dl>
+
+</div>
+</div>
+<a id="aa2942f484e5dc3dc4e890e96eb1c3cdc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2942f484e5dc3dc4e890e96eb1c3cdc">&#9670;&nbsp;</a></span>isOverflowInterruptEnabled()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::isOverflowInterruptEnabled </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>check, if the the <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a> overflow interrupt is enabled </p><dl class="section return"><dt>Returns</dt><dd>true, if the interrupt is enabled. </dd></dl>
+
+</div>
+</div>
+<a id="accdd110816990f607edea309ee4a47d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accdd110816990f607edea309ee4a47d0">&#9670;&nbsp;</a></span>operator()()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>the C++ operator () returns the TCNT register value </p><dl class="section return"><dt>Returns</dt><dd>the ADC value </dd></dl>
+
+</div>
+</div>
+<a id="a8104a0bdfee279beb14210859be20a35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8104a0bdfee279beb14210859be20a35">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a>&amp; <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::operator= </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>the C++ operator = allows write access to the TCNT register </p>
+
+</div>
+</div>
+<a id="aefe36ef29722f8b0c88881aecb732d73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aefe36ef29722f8b0c88881aecb732d73">&#9670;&nbsp;</a></span>waveformGenerationMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;SFRA _TCCRA, SFRA _TCCRB, SFRA _TCNT, SFRA _OCRA, SFRA _OCRB, SFRA _ICR, SFRA _TIMSK, uint8_t _TICIE1&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">Timer16</a>&amp; <a class="el" href="class_s_a_b_a_1_1_timer_1_1_timer16.html">SABA::Timer::Timer16</a>&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;::waveformGenerationMode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespace_s_a_b_a_1_1_timer.html#abe02660c2a05e50d60df441474268418">WaveformGenerationMode</a>&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>set <a class="el" href="namespace_s_a_b_a_1_1_timer.html" title="Hardware Timer support class templates. ">Timer</a> waveform generation mode </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the WaveformGenerationMode enum constant, see also the WGMx bits in TCCRxx register description </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the this object for creating fluent calls </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="saba__timer_8h_source.html">saba_timer.h</a></li>
 </ul>

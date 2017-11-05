@@ -14,6 +14,10 @@
 
 namespace SABA
 {
+  /**
+   @namespace SABA::Timing
+   @brief Delay and Timing helper classes
+  */
   namespace Timing
   {
     // increment this system ticker periodically by an timer interrupt
