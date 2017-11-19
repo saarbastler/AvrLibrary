@@ -89,7 +89,7 @@ namespace SABA
         SFRBITS<_TCCRB,_BV(WGM12)|_BV(WGM13),WGM12> w23;
 
         w01 = m & 3;
-        w23 = m & 0x0c;
+        w23 = m >> 2;
 
         return *this;
       }
@@ -227,6 +227,10 @@ typedef Timer8<(SFRA)&TCCR0,(SFRA)&TCNT0,(SFRA)&TIMSK> Timer0;
 #ifdef TIMSK1
 // AtMega xx8
 typedef Timer16<(SFRA)&TCCR1A,(SFRA)&TCCR1B,(SFRA)&TCNT1,(SFRA)&OCR1A,(SFRA)&OCR1B,(SFRA)&ICR1,(SFRA)&TIMSK1,ICIE1> Timer1;
+#endif
+#ifdef TIMSK3
+// AtMega 2560
+typedef Timer16<(SFRA)&TCCR3A,(SFRA)&TCCR3B,(SFRA)&TCNT3,(SFRA)&OCR3A,(SFRA)&OCR3B,(SFRA)&ICR3,(SFRA)&TIMSK3,ICIE3> Timer3;
 #endif
   }
 }
