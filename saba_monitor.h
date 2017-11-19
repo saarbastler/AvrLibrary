@@ -70,7 +70,7 @@ namespace SABA
       if( ch == 'a' )
         modifyPort<(SFRA)&PINA>(mode, b);
       if( ch == 0 || ch == 'a' )
-        dumpPort<SFRA&PINA>('A');
+        dumpPort<(SFRA)&PINA>('A');
 #endif
 #if defined(PORTB) && defined(PINB) && defined (DDRB)
       if( ch == 'b' )
