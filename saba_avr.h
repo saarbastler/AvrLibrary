@@ -295,6 +295,59 @@ namespace SABA
     }
   };
   
+  template<SFRA PIN_ADDR, uint8_t BIT_MASK, uint8_t BIT_SHIFT>
+  class PortRange
+  {
+    public:
+    
+    uint8_t operator () () //! read the bits
+    {
+      Port8<PIN_ADDR> port8;
+
+      return (port8.pin() & BIT_MASK) >> BIT_SHIFT;
+    }
+    
+    void operator =(uint8_t value) //! write the bits
+    {
+      Port8<PIN_ADDR> port8;
+
+      port8.port = (port8.port() & ~BIT_MASK) | ((value << BIT_SHIFT) & BIT_MASK);
+    }
+    
+    void operator |=(uint8_t value) //! or the bits with a value
+    {
+      Port8<PIN_ADDR> port8;
+
+      port8.port |= ((value << BIT_SHIFT) & BIT_MASK);
+    }
+
+    void operator &=(uint8_t value)  //! and the bits with a value
+    {
+      Port8<PIN_ADDR> port8;
+
+      port8.port &= ((value << BIT_SHIFT) & BIT_MASK);
+    }
+
+    PortRange& asOutput() //! the Pins is an output
+    {
+      Port8<PIN_ADDR> port8;
+
+      port8.ddr |= BIT_MASK;
+
+      return *this;
+    }
+
+    PortRange& asInput() //! the Pin is an input
+    {
+      Port8<PIN_ADDR> port8;
+
+      port8.ddr &= ~BIT_MASK;
+
+      return *this;
+    }
+
+  };
+
 }
 
 #endif /* SABA_AVR_H_ */
