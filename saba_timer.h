@@ -18,12 +18,204 @@
 namespace SABA
 {
   /**
-   @namespace SABA::Timer
-   @brief Hardware Timer support class templates
+   @namespace SABA::Timer8
+   @brief 8 Bit Hardware Timer support class templates
   */
-  namespace Timer
+  namespace Timer8
   {
-    /// The WaveformGenerationMode enum
+    /// Clock selection
+    enum ClockSelect
+    {
+      NoClockSource= 0,   /**< No clock source (Timer/Counter stopped). */
+      By1= 1,             /**< clkIO by 1 (No prescaling) */
+      By8=2,              /**< clkIO by 8 (From prescaler) */
+      By64=3,             /**< clkIO by 64 (From prescaler) */
+      By256=4,            /**< clkIO by 256 (From prescaler) */
+      By1024=5,           /**< clkIO by 1024 (From prescaler) */
+      TxFalling= 6,       /**< External clock source on T0/1 pin. Clock on falling edge. */
+      TxRising= 7         /**< External clock source on T0/1 pin. Clock on rising edge. */
+    };
+
+    /// The 8 Bit Timer WaveformGenerationMode enum
+    enum WaveformGenerationMode
+    {
+      Normal= 0,                    /**< Normal */
+      PWM_PHASE_CORR= 1,            /**< PWM, Phase Correct */
+      CTC_OCRA= 2,                  /**< CTC OCRA */
+      FAST_PWM = 3,                 /**< Fast PWM */
+      PWM_PHASE_CORR_OCRA= 5,       /**< PWM, Phase and Frequency Correct OCRA */
+      FAST_PWM_OCRA = 7             /**< Fast PWM OCRA*/
+    };
+
+    //ATMega8/16/32
+    template<SFRA _TCCR,SFRA _TCNT,SFRA _TIMSK>
+    class TC
+    {
+      public:
+
+      TC& clockSelect(ClockSelect c)
+      {
+        SFRBITS<_TCCR,_BV(CS00)|_BV(CS01)|_BV(CS02),CS00> c012;
+        c012 = c;
+
+        return *this;
+      }
+
+      TC& enableOverflowInterrupt(bool enable)
+      {
+        SFRBIT<_TIMSK,TOIE0> bit;
+        bit= enable;
+
+        return *this;
+      }
+
+      // using only one Byte
+      SFREG16<_TCNT> tcnt;
+    };
+
+   /** A template class to access a 8 Bit AVR Timer with PWM
+  
+    @tparam _TCCRA the TCCRA address
+    @tparam _TCCRB the TCCRB address
+    @tparam _TCNT the TCCRC address
+    @tparam _OCRA the OCRA address
+    @tparam _OCRB the OCRB address
+    @tparam _ICR the ICR address
+    @tparam _TIMSK the TIMSK address
+
+    Usage:
+    ~~~{.c}
+    SABA::Timer::Timer0 timer0; // use the typedef instead of the template will save space
+
+    timer0
+      .waveformGenerationMode(SABA::Timer::Normal)
+      .clockSelect(SABA::Timer::By8);
+    ~~~ 
+    */
+    template<SFRA _TCCRA,SFRA _TCCRB,SFRA _TCNT,SFRA _OCRA,SFRA _OCRB,SFRA _TIMSK,SFRA _TIFR>
+    class TCPWM
+    {
+    public:
+      /** set Timer waveform generation mode
+       * @param c the WaveformGenerationMode enum constant, see also the WGMx bits in TCCRxx register description
+       * @return the this object for creating fluent calls
+      */
+      TCPWM& waveformGenerationMode(WaveformGenerationMode m)
+      {
+        SFRBITS<_TCCRA,_BV(WGM00)|_BV(WGM01),WGM00> w01;
+        SFRBIT<_TCCRB,WGM02> w2;
+
+        w01 = m & 3;
+        w2 = (m & 4) != 0;
+
+        return *this;
+      }
+
+      /** set Timer clock selection
+       * @param c the ClockSelect enum constant, see also the CSxx bits in TCCRxx register description
+       * @return the this object for creating fluent calls
+      */
+      TCPWM& clockSelect(ClockSelect c)
+      {
+        SFRBITS<_TCCRB,_BV(CS00)|_BV(CS01)|_BV(CS02),CS00> c012;
+        c012 = c;
+
+        return *this;
+      }
+
+      /** enable or disable the Timer overflow interrupt
+       * @param enable, if true, enable the overflow interrupt, if false disable the overflow interrupt
+       * @return the this object for creating fluent calls
+      */
+      TCPWM& enableOverflowInterrupt(bool enable)
+      {
+        SFRBIT<_TIMSK,TOIE0> bit;
+        bit= enable;
+
+        return *this;
+      }
+
+      /** check, if the the Timer overflow interrupt is enabled
+       * @return true, if the interrupt is enabled.
+      */
+      bool isOverflowInterruptEnabled()
+      {
+        SFRBIT<_TIMSK,TOIE1> bit;
+
+        return bit();
+      }
+
+      /** enable or disable the Timer Comparator A match interrupt
+       * @param enable, if true, enable the Comparator A match interrupt, if false disable the Comparator A match interrupt
+       * @return the this object for creating fluent calls
+      */
+      TCPWM& enableOutputCompAMatchInterrupt(bool enable)
+      {
+        SFRBIT<_TIMSK,OCIE0A> bit;
+        bit= enable;
+
+        return *this;
+      }
+
+      /** enable or disable the Timer Comparator B match interrupt
+       * @param enable, if true, enable the Comparator B match interrupt, if false disable the Comparator B match interrupt
+       * @return the this object for creating fluent calls
+      */
+      TCPWM& enableOutputCompBMatchInterrupt(bool enable)
+      {
+        SFRBIT<_TIMSK,OCIE0B> bit;
+        bit= enable;
+      
+        return *this;
+      }
+
+      /** the C++ operator () returns the TCNT register value
+       * @return the ADC value
+       */
+      uint8_t operator() ()
+      {
+        SFREG <_TCNT> tcnt;
+
+        return tcnt();
+      }
+
+      /** the C++ operator = allows write access to the TCNT register
+       */
+      TCPWM& operator= (uint8_t value)
+      {
+        SFREG <_TCNT> tcnt;
+
+        tcnt= value;
+
+        return *this;
+      }
+
+      // using only one Byte 
+      union
+      {
+        SFREG16<_TCNT> tcnt; //! direct access to the TCNT register
+        SFREG16<_OCRA> ocra; //! direct access to the OCRA register
+        SFREG16<_OCRB> ocrb; //! direct access to the OCRB register
+      };
+    };
+  }
+
+  namespace Timer16
+  {
+    /// Clock selection
+    enum ClockSelect
+    {
+      NoClockSource= 0,   /**< No clock source (Timer/Counter stopped). */
+      By1= 1,             /**< clkIO by 1 (No prescaling) */
+      By8=2,              /**< clkIO by 8 (From prescaler) */
+      By64=3,             /**< clkIO by 64 (From prescaler) */
+      By256=4,            /**< clkIO by 256 (From prescaler) */
+      By1024=5,           /**< clkIO by 1024 (From prescaler) */
+      TxFalling= 6,       /**< External clock source on T0/1 pin. Clock on falling edge. */
+      TxRising= 7         /**< External clock source on T0/1 pin. Clock on rising edge. */
+    };
+
+    /// The 16 Bit Timer WaveformGenerationMode enum
     enum WaveformGenerationMode
     {
       Normal= 0,                    /**< Normal */
@@ -41,19 +233,6 @@ namespace SABA
       CTC_ICR1= 12,                 /**< CTC ICR1 */
       FAST_PWM_ICR1= 14,            /**< Fast PWM ICR1 */
       FAST_PWM_OCR1A=15             /**< Fast PWM OCR1A */
-    };
-
-    /// Clock selection
-    enum ClockSelect
-    {
-      NoClockSource= 0,   /**< No clock source (Timer/Counter stopped). */
-      By1= 1,             /**< clkIO by 1 (No prescaling) */
-      By8=2,              /**< clkIO by 8 (From prescaler) */
-      By64=3,             /**< clkIO by 64 (From prescaler) */
-      By256=4,            /**< clkIO by 256 (From prescaler) */
-      By1024=5,           /**< clkIO by 1024 (From prescaler) */
-      T1Falling= 6,       /**< External clock source on T1 pin. Clock on falling edge. */
-      T1Rising= 7         /**< External clock source on T1 pin. Clock on rising edge. */
     };
 
     /** A template class to access a 16 Bit AVR Timer
@@ -76,14 +255,14 @@ namespace SABA
       ~~~ 
       */
     template<SFRA _TCCRA,SFRA _TCCRB,SFRA _TCNT,SFRA _OCRA,SFRA _OCRB,SFRA _ICR,SFRA _TIMSK,uint8_t _TICIE1>
-    class Timer16
+    class TCPWM
     {
     public:
       /** set Timer waveform generation mode
        * @param c the WaveformGenerationMode enum constant, see also the WGMx bits in TCCRxx register description
        * @return the this object for creating fluent calls
       */
-      Timer16& waveformGenerationMode(WaveformGenerationMode m)
+      TCPWM& waveformGenerationMode(WaveformGenerationMode m)
       {
         SFRBITS<_TCCRA,_BV(WGM10)|_BV(WGM11),WGM10> w01;
         SFRBITS<_TCCRB,_BV(WGM12)|_BV(WGM13),WGM12> w23;
@@ -98,7 +277,7 @@ namespace SABA
        * @param c the ClockSelect enum constant, see also the CSxx bits in TCCRxx register description
        * @return the this object for creating fluent calls
       */
-      Timer16& clockSelect(ClockSelect c)
+      TCPWM& clockSelect(ClockSelect c)
       {
         SFRBITS<_TCCRB,_BV(CS10)|_BV(CS11)|_BV(CS12),CS10> c012;
         c012 = c;
@@ -110,7 +289,7 @@ namespace SABA
        * @param enable, if true, enable the overflow interrupt, if false disable the overflow interrupt
        * @return the this object for creating fluent calls
       */
-      Timer16& enableOverflowInterrupt(bool enable)
+      TCPWM& enableOverflowInterrupt(bool enable)
       {
         SFRBIT<_TIMSK,TOIE1> bit;
         bit= enable;
@@ -132,7 +311,7 @@ namespace SABA
        * @param enable, if true, enable the Comparator A match interrupt, if false disable the Comparator A match interrupt
        * @return the this object for creating fluent calls
       */
-      Timer16& enableOutputCompAMatchInterrupt(bool enable)
+      TCPWM& enableOutputCompAMatchInterrupt(bool enable)
       {
         SFRBIT<_TIMSK,OCIE1A> bit;
         bit= enable;
@@ -144,7 +323,7 @@ namespace SABA
        * @param enable, if true, enable the Comparator B match interrupt, if false disable the Comparator B match interrupt
        * @return the this object for creating fluent calls
       */
-      Timer16& enableOutputCompBMatchInterrupt(bool enable)
+      TCPWM& enableOutputCompBMatchInterrupt(bool enable)
       {
         SFRBIT<_TIMSK,OCIE1B> bit;
         bit= enable;
@@ -156,7 +335,7 @@ namespace SABA
        * @param enable, if true, enable the Input Capture interrupt, if false disable the Input Capture interrupt
        * @return the this object for creating fluent calls
       */
-      Timer16& enableInputCaptureInterrupt(bool enable)
+      TCPWM& enableInputCaptureInterrupt(bool enable)
       {
         SFRBIT<_TIMSK,_TICIE1> bit;
         bit= enable;
@@ -176,7 +355,7 @@ namespace SABA
 
       /** the C++ operator = allows write access to the TCNT register
        */
-      Timer16& operator= (uint16_t value)
+      TCPWM& operator= (uint16_t value)
       {
         SFREG16 <_TCNT> tcnt;
 
@@ -195,44 +374,28 @@ namespace SABA
       };
     };
 
-    template<SFRA _TCCR,SFRA _TCNT,SFRA _TIMSK>
-    class Timer8
-    {
-      public:
+  }
 
-      Timer8& clockSelect(ClockSelect c)
-      {
-        SFRBITS<_TCCR,_BV(CS00)|_BV(CS01)|_BV(CS02),CS00> c012;
-        c012 = c;
-
-        return *this;
-      }
-
-      Timer8& enableOverflowInterrupt(bool enable)
-      {
-        SFRBIT<_TIMSK,TOIE0> bit;
-        bit= enable;
-
-        return *this;
-      }
-
-      // using only one Byte
-      SFREG16<_TCNT> tcnt;
-    };
 #if defined(TIMSK)
 // AtMega 8
-typedef Timer16<(SFRA)&TCCR1A,(SFRA)&TCCR1B,(SFRA)&TCNT1,(SFRA)&OCR1A,(SFRA)&OCR1B,(SFRA)&ICR1,(SFRA)&TIMSK,TIEC1> Timer1;
-typedef Timer8<(SFRA)&TCCR0,(SFRA)&TCNT0,(SFRA)&TIMSK> Timer0;
+typedef Timer8::TC<(SFRA)&TCCR0,(SFRA)&TCNT0,(SFRA)&TIMSK> Timer0;
+typedef Timer16:TCPWM<(SFRA)&TCCR1A,(SFRA)&TCCR1B,(SFRA)&TCNT1,(SFRA)&OCR1A,(SFRA)&OCR1B,(SFRA)&ICR1,(SFRA)&TIMSK,TIEC1> Timer1;
 #endif
+
+#ifdef TIMSK0
+typedef Timer8::TCPWM<(SFRA)&TCCR0A,(SFRA)&TCCR0B,(SFRA)&TCNT0,(SFRA)&OCR0A,(SFRA)&OCR0B,(SFRA)&TIMSK0,(SFRA)&TIFR0> Timer0;
+#endif
+
 #ifdef TIMSK1
 // AtMega xx8
-typedef Timer16<(SFRA)&TCCR1A,(SFRA)&TCCR1B,(SFRA)&TCNT1,(SFRA)&OCR1A,(SFRA)&OCR1B,(SFRA)&ICR1,(SFRA)&TIMSK1,ICIE1> Timer1;
+typedef Timer16::TCPWM<(SFRA)&TCCR1A,(SFRA)&TCCR1B,(SFRA)&TCNT1,(SFRA)&OCR1A,(SFRA)&OCR1B,(SFRA)&ICR1,(SFRA)&TIMSK1,ICIE1> Timer1;
 #endif
+
 #ifdef TIMSK3
 // AtMega 2560
-typedef Timer16<(SFRA)&TCCR3A,(SFRA)&TCCR3B,(SFRA)&TCNT3,(SFRA)&OCR3A,(SFRA)&OCR3B,(SFRA)&ICR3,(SFRA)&TIMSK3,ICIE3> Timer3;
+typedef Timer16::TCPWM<(SFRA)&TCCR3A,(SFRA)&TCCR3B,(SFRA)&TCNT3,(SFRA)&OCR3A,(SFRA)&OCR3B,(SFRA)&ICR3,(SFRA)&TIMSK3,ICIE3> Timer3;
 #endif
-  }
+
 }
 
  #endif // SABA_TIMER16_H_
