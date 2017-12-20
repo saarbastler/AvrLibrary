@@ -158,6 +158,15 @@ namespace SABA
       return true;
     }
 
+    static bool clock(CmdReader<INDEX_TYPE,BUFFER_SIZE>& cmdReader)
+    {
+      OStream<putch> ostr;
+
+      ostr << PSTR("OSCAL: ") << hex << OSCCAL << PSTR(" CLKPR: ") << CLKPR << endl;
+
+      return true;
+    }
+
   protected:
     static constexpr uint8_t MODE_SETBIT = 1;
     static constexpr uint8_t MODE_RESET = 2;
