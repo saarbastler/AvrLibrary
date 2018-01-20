@@ -54,13 +54,13 @@ namespace SABA
       ubrrl= (uint8_t)ubrr & (uint8_t)0xff;
       ubrrh= ubrr >> 8;
       ucsra= 0;
-      ucsrb= _BV(_RXEN)|_BV(_TXEN);
+      ucsrb= BIT(_RXEN)|BIT(_TXEN);
 
 // Atmega 8
 #ifdef URSEL
-      ucsrc= _BV(URSEL) | _BV(UCSZ0) | _BV(UCSZ1);
+      ucsrc= BIT(URSEL) | BIT(UCSZ0) | BIT(UCSZ1);
 #else
-      ucsrc= _BV(_UCSZ0) | _BV(_UCSZ1);
+      ucsrc= BIT(_UCSZ0) | BIT(_UCSZ1);
 #endif
     }
     

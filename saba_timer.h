@@ -55,7 +55,7 @@ namespace SABA
 
       TC& clockSelect(ClockSelect c)
       {
-        SFRBITS<_TCCR,_BV(CS00)|_BV(CS01)|_BV(CS02),CS00> c012;
+        SFRBITS<_TCCR,BIT(CS00)|BIT(CS01)|BIT(CS02),CS00> c012;
         c012 = c;
 
         return *this;
@@ -102,7 +102,7 @@ namespace SABA
       */
       TCPWM& waveformGenerationMode(WaveformGenerationMode m)
       {
-        SFRBITS<_TCCRA,_BV(WGM00)|_BV(WGM01),WGM00> w01;
+        SFRBITS<_TCCRA,BIT(WGM00)|BIT(WGM01),WGM00> w01;
         SFRBIT<_TCCRB,WGM02> w2;
 
         w01 = m & 3;
@@ -117,7 +117,7 @@ namespace SABA
       */
       TCPWM& clockSelect(ClockSelect c)
       {
-        SFRBITS<_TCCRB,_BV(CS00)|_BV(CS01)|_BV(CS02),CS00> c012;
+        SFRBITS<_TCCRB,BIT(CS00)|BIT(CS01)|BIT(CS02),CS00> c012;
         c012 = c;
 
         return *this;
@@ -264,8 +264,8 @@ namespace SABA
       */
       TCPWM& waveformGenerationMode(WaveformGenerationMode m)
       {
-        SFRBITS<_TCCRA,_BV(WGM10)|_BV(WGM11),WGM10> w01;
-        SFRBITS<_TCCRB,_BV(WGM12)|_BV(WGM13),WGM12> w23;
+        SFRBITS<_TCCRA,BIT(WGM10)|BIT(WGM11),WGM10> w01;
+        SFRBITS<_TCCRB,BIT(WGM12)|BIT(WGM13),WGM12> w23;
 
         w01 = m & 3;
         w23 = m >> 2;
@@ -279,7 +279,7 @@ namespace SABA
       */
       TCPWM& clockSelect(ClockSelect c)
       {
-        SFRBITS<_TCCRB,_BV(CS10)|_BV(CS11)|_BV(CS12),CS10> c012;
+        SFRBITS<_TCCRB,BIT(CS10)|BIT(CS11)|BIT(CS12),CS10> c012;
         c012 = c;
 
         return *this;

@@ -21,6 +21,11 @@ namespace SABA
   /// Address of Special function Register
   typedef volatile uint16_t SFRA;
 
+  constexpr uint8_t BIT(uint8_t bit)
+  {
+    return uint8_t(1 << (bit));
+  }
+  
   // \brief  8 Bit Special Function Register template class
   /** 
   A template class to access AVR special function registers. The C++ compiler will compile the methods to 
@@ -99,7 +104,7 @@ namespace SABA
   /** 
   A template class to access a single bit in an AVR special function register. 
   @tparam SFR_ADDRESS the SFR address
-  @tparam BIT_POS the bit position, dont use the _BV macro it is done inside this class
+  @tparam BIT_POS the bit position, dont use the BIT macro it is done inside this class
     
   Usage:
   ~~~{.c}
@@ -118,7 +123,7 @@ namespace SABA
     {
       SFREG<SFR_ADDRESS> sfr;
 
-      return sfr() & _BV(BIT_POS);
+      return sfr() & BIT(BIT_POS);
     }
     
     void operator =(bool value) //! write the bit
@@ -126,9 +131,9 @@ namespace SABA
       SFREG<SFR_ADDRESS> sfr;
 
       if( value)
-        sfr |= _BV(BIT_POS);
+        sfr |= BIT(BIT_POS);
       else
-        sfr &= (uint8_t)~_BV(BIT_POS);
+        sfr &= (uint8_t)~BIT(BIT_POS);
     }
   };
 
@@ -140,7 +145,7 @@ namespace SABA
 
   Usage:
   ~~~{.c}
-  SABA::SFRBITS<(SFRA)&TCCRB,_BV(WGM12)|_BV(WGM13),WGM12> w23;
+  SABA::SFRBITS<(SFRA)&TCCRB,BIT(WGM12)|BIT(WGM13),WGM12> w23;
 
   uint8_t value= w23(); // read the WGM12/13 bis as a 2 bit value
   ocie1a= true; // write the WGM12/13 bis as a 2 bit value
@@ -240,7 +245,7 @@ namespace SABA
     {
       Port8<PIN_ADDR> port8;
 
-      return port8.pin() & _BV(BIT_POS);
+      return port8.pin() & BIT(BIT_POS);
     }
 
     void operator= (bool value) //! write the output
@@ -248,9 +253,9 @@ namespace SABA
       Port8<PIN_ADDR> port8;
 
       if(value)
-        port8.port |= _BV(BIT_POS);
+        port8.port |= BIT(BIT_POS);
       else
-        port8.port &= (uint8_t)~_BV(BIT_POS);
+        port8.port &= (uint8_t)~BIT(BIT_POS);
     }
 
     PortPin& toggle() //! toggle the output. Depending on the SUPPORTS_PIN_TOGGLE (see saba_controller.h) macro, the PIN is used or PORT is toggled
@@ -258,9 +263,9 @@ namespace SABA
       Port8<PIN_ADDR> port8;
 
 #ifdef SUPPORTS_PIN_TOGGLE
-      port8.pin = _BV(BIT_POS);
+      port8.pin = BIT(BIT_POS);
 #else
-      port8.port ^= _BV(BIT_POS);
+      port8.port ^= BIT(BIT_POS);
 #endif
 
       return *this;
@@ -270,7 +275,7 @@ namespace SABA
     {
       Port8<PIN_ADDR> port8;
 
-      port8.ddr |= _BV(BIT_POS);
+      port8.ddr |= BIT(BIT_POS);
 
       return *this;
     }
@@ -279,7 +284,7 @@ namespace SABA
     {
       Port8<PIN_ADDR> port8;
 
-      port8.ddr &= ~_BV(BIT_POS);
+      port8.ddr &= uint8_t(~BIT(BIT_POS));
 
       return *this;
     }
@@ -288,7 +293,7 @@ namespace SABA
     {
       Port8<PIN_ADDR> port8;
 
-      port8.ddr &= ~_BV(BIT_POS);
+      port8.ddr &= uint8_t(~BIT(BIT_POS));
       *this = true;
 
       return *this;
