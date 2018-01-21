@@ -12,6 +12,8 @@
 #ifndef SABA_MONITOR_H_
 #define SABA_MONITOR_H_
 
+#include <avr/eeprom.h>
+
 #include <saba_avr.h>
 #include <saba_ostream.h>
 #include <saba_cmdline.h>
@@ -166,6 +168,36 @@ namespace SABA
 
       return true;
     }
+    
+    static bool eeprom(CmdReader<INDEX_TYPE,BUFFER_SIZE>& cmdReader)
+    {
+      uint16_t start= cmdReader.template nextHex<uint8_t>();
+      uint8_t rows;
+      if( !cmdReader() )
+        return false;
+        
+      rows= cmdReader.template nextHex<uint8_t>();
+      if( !cmdReader() )
+        return false;
+  
+      if( rows == 0 )
+        rows= 1;
+  
+      OStream<putch> ostr;
+      ostr << hex;
+      for( ;rows > 0;rows--)
+      {
+        ostr <<  start << ':';
+        for(uint8_t i=16;i != 0;i--)
+        {
+          ostr << ' ' << eeprom_read_byte( (const uint8_t *)start );
+          start++;
+        }
+        ostr << endl;
+      }
+
+      return true;
+    }
 
   protected:
     static constexpr uint8_t MODE_SETBIT = 1;
@@ -173,6 +205,9 @@ namespace SABA
     static constexpr uint8_t MODE_TOGGLE = 3;
     static constexpr uint8_t MODE_SET = 4;
 
+    static uint16_t lastEEPromsAddr;
+    static uint8_t lastEEPromRows;
+    
     template<SFRA PIN_ADDR> static void modifyPort(uint8_t mode, uint8_t value)
     {
       Port8<PIN_ADDR> port8;

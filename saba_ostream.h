@@ -15,7 +15,7 @@
 namespace SABA
 {
   //! the putch function needed for output
-  typedef void PUTCH(uint8_t);
+  typedef void (*PUTCH)(uint8_t);
 
   // \brief C++ output stream super class
   /** 
