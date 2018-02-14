@@ -1,5 +1,5 @@
 {
-    "name": "SaBa",
+    "name": "SaBa-AVRLib",
     "keywords": "C++11",
     "description": "Bare Metal Library for Atmel AVR",
     "authors":
