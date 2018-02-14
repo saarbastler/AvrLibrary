@@ -1,0 +1,17 @@
+{
+    "name": "SaBa",
+    "keywords": "C++11",
+    "description": "Bare Metal Library for Atmel AVR",
+    "authors":
+    {
+        "name": "Jörg Prim",
+        "email": "joerg@saarbastler.de",
+        "url": "https://saarbastler.de"
+    },
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/saarbastler/AvrLibrary.git"
+    },
+    "platforms": "atmelavr"
+}
