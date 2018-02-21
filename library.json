@@ -13,5 +13,6 @@
         "type": "git",
         "url": "https://github.com/saarbastler/AvrLibrary.git"
     },
+    "version": "0.1.0",
     "platforms": "atmelavr"
 }

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['timer16',['Timer16',['../class_s_a_b_a_1_1_timer_1_1_timer16.html',1,'SABA::Timer']]],
-  ['timer8',['Timer8',['../class_s_a_b_a_1_1_timer_1_1_timer8.html',1,'SABA::Timer']]]
+  ['tc',['TC',['../class_s_a_b_a_1_1_timer8_1_1_t_c.html',1,'SABA::Timer8']]],
+  ['tcpwm',['TCPWM',['../class_s_a_b_a_1_1_timer16_1_1_t_c_p_w_m.html',1,'SABA::Timer16::TCPWM&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _ICR, _TIMSK, _TICIE1 &gt;'],['../class_s_a_b_a_1_1_timer8_1_1_t_c_p_w_m.html',1,'SABA::Timer8::TCPWM&lt; _TCCRA, _TCCRB, _TCNT, _OCRA, _OCRB, _TIMSK, _TIFR &gt;']]],
+  ['turnencoder',['TurnEncoder',['../class_s_a_b_a_1_1_turn_encoder.html',1,'SABA']]]
 ];

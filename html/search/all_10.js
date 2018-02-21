@@ -19,6 +19,9 @@ var searchData=
   ['singledelayfixed_3c_20uint8_5ft_2c_20delay_20_3e',['SingleDelayFixed&lt; uint8_t, delay &gt;',['../class_s_a_b_a_1_1_timing_1_1_single_delay_fixed.html',1,'SABA::Timing']]],
   ['spi',['SPI',['../namespace_s_a_b_a_1_1_s_p_i.html',1,'SABA']]],
   ['startconversion',['startConversion',['../class_s_a_b_a_1_1_adc.html#a9b5fb03873d33d0f52f04ab992164622',1,'SABA::Adc']]],
-  ['timer',['Timer',['../namespace_s_a_b_a_1_1_timer.html',1,'SABA']]],
+  ['startread',['startRead',['../class_s_a_b_a_1_1_i2_c_1_1_i2_c_master.html#a0390b8fdc8714713957a5e28304cc41f',1,'SABA::I2C::I2CMaster']]],
+  ['startwrite',['startWrite',['../class_s_a_b_a_1_1_i2_c_1_1_i2_c_master.html#aea0ad597732600ee879f95aa2bc34bfc',1,'SABA::I2C::I2CMaster']]],
+  ['startwriteandread',['startWriteAndRead',['../class_s_a_b_a_1_1_i2_c_1_1_i2_c_master.html#a63b8f12ccc936ac78487122c8fe8c58e',1,'SABA::I2C::I2CMaster::startWriteAndRead()'],['../class_s_a_b_a_1_1_i2_c_1_1_master.html#af788e375154ef7d46b8f792698e28a8a',1,'SABA::I2C::Master::startWriteAndRead()']]],
+  ['timer8',['Timer8',['../namespace_s_a_b_a_1_1_timer8.html',1,'SABA']]],
   ['timing',['Timing',['../namespace_s_a_b_a_1_1_timing.html',1,'SABA']]]
 ];

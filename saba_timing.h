@@ -12,6 +12,27 @@
 #ifndef SABA_TIMING_H_
 #define SABA_TIMING_H_
 
+#define ISR_INCREMENTUINT16(VAR)  \
+  asm volatile                    \
+  (                               \
+  "push r16"        "\n\t"        \
+  "in r16,%i1"      "\n\t"        \
+  "push r16"        "\n\t"        \
+  "lds  r16, %A0"   "\n\t"        \
+  "inc  r16"        "\n\t"        \
+  "sts  %A0, r16"   "\n\t"        \
+  "brne 0f"         "\n\t"        \
+  "lds	r16, %B0"   "\n\t"        \
+  "inc	r16"        "\n\t"        \
+  "sts	%B0, r16"   "\n\t"        \
+  "0:"              "\n\t"        \
+  "pop	r16"        "\n\t"        \
+  "out 	%i1, r16"   "\n\t"        \
+  "pop 	r16"        "\n\t"        \
+  "reti"                          \
+  :: "m" (VAR), "i" (&SREG)       \
+  )                               \
+  
 namespace SABA
 {
   /**
@@ -21,8 +42,9 @@ namespace SABA
   namespace Timing
   {
     // increment this system ticker periodically by an timer interrupt
-    // define it as volatile uint16_t SABA::Timing::ticker asm("Timingticker");
-    extern volatile uint16_t ticker asm("Timingticker");
+    // define it as volatile uint16_t SABA::Timing::ticker;
+    // The macro ISR_INCREMENTUINT16 is an ISR increment method
+    extern volatile uint16_t ticker;
 
     // delay a fixed time. TYPE is either uint8_t or uint16_t for max 255/65535 delay time
     // Can be re triggered or re started again.

@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['nextchar',['nextChar',['../class_s_a_b_a_1_1_cmd_reader.html#a1a6d60fda04b08c2c276fb548a132577',1,'SABA::CmdReader']]],
-  ['nextcharignoreblank',['nextCharIgnoreBlank',['../class_s_a_b_a_1_1_cmd_reader.html#aac7721bd651e1382cf41e8a309efbaa4',1,'SABA::CmdReader']]],
-  ['nextdec',['nextDec',['../class_s_a_b_a_1_1_cmd_reader.html#a6b5ecd83133e85923de3377fe33be7d2',1,'SABA::CmdReader']]],
-  ['nexthex',['nextHex',['../class_s_a_b_a_1_1_cmd_reader.html#ae7f40e02179371cae051581859693bb5',1,'SABA::CmdReader']]]
+  ['master',['master',['../class_s_a_b_a_1_1_s_p_i_1_1___serial_peripheral_interface.html#a602fdc13a6d13372acc2eb26a5292332',1,'SABA::SPI::_SerialPeripheralInterface']]],
+  ['multiplexer',['multiplexer',['../class_s_a_b_a_1_1_adc.html#a54b340c54f2ad330f5f7b699fe2c3f64',1,'SABA::Adc']]]
 ];
