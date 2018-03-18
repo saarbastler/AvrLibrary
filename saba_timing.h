@@ -22,9 +22,9 @@
   "inc  r16"        "\n\t"        \
   "sts  %A0, r16"   "\n\t"        \
   "brne 0f"         "\n\t"        \
-  "lds	r16, %B0"   "\n\t"        \
+  "lds	r16, %A0+1" "\n\t"        \
   "inc	r16"        "\n\t"        \
-  "sts	%B0, r16"   "\n\t"        \
+  "sts	%A0+1, r16" "\n\t"        \
   "0:"              "\n\t"        \
   "pop	r16"        "\n\t"        \
   "out 	%i1, r16"   "\n\t"        \
@@ -91,6 +91,62 @@ namespace SABA
     private:
 
       TYPE startValue;
+      enum Mode
+      {
+        Running= 0, Stopped= 1, Done= 2
+      };
+
+      Mode mode= Done;
+    };
+    
+    // delay a  time. TYPE is either uint8_t or uint16_t for max 255/65535 delay time
+    // Can be re triggered or re started again.
+    template<typename TYPE>
+    class SingleDelay
+    {
+    public:
+      void stop()
+      {
+        mode= Done;
+      }
+          
+      void start(TYPE delay_)
+      {
+        delay= delay_;
+        startValue= ticker;
+        mode= Running;
+      }
+
+      bool isRunning()
+      {
+        return mode == Running;
+      }
+
+      // is true only once, if the delay is done.
+      // has to be started again after delay is done.
+      bool operator()()
+      {
+        if(mode != Running)
+        {
+          return false;
+        }
+            
+        if( mode == Running )
+        {
+          TYPE diff= ticker - startValue;
+
+          if(diff >= delay)
+            mode= Stopped;
+        }
+
+        return (bool)mode;
+      }
+
+      private:
+
+      TYPE startValue;
+      TYPE delay;
+      
       enum Mode
       {
         Running= 0, Stopped= 1, Done= 2
