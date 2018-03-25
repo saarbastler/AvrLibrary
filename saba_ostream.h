@@ -31,7 +31,11 @@ namespace SABA
     static constexpr _Fmtflags base = (_Fmtflags)3; //! bit mask for base bits hex and dec (oct is not yet implemented)
     static constexpr _Fmtflags hex = (_Fmtflags)0; //! hexadecimal output
     static constexpr _Fmtflags dec = (_Fmtflags)1; //! decimal output
-
+    
+    static constexpr _Fmtflags adjust = (_Fmtflags)0x8; //! bit mask for adjust 
+    static constexpr _Fmtflags left = (_Fmtflags)0x8; //! left adjust
+    static constexpr _Fmtflags right = (_Fmtflags)0x0; //! right adjust
+    
     //! set bits in the format byte
     _Fmtflags setf(_Fmtflags flags)
     {
@@ -49,8 +53,17 @@ namespace SABA
       return fmtflags;
     }
 
+    uint8_t width(uint8_t newWidth)
+    {
+      uint8_t tmp= fwidth;
+      fwidth= newWidth;
+      
+      return tmp;
+    }
+        
     protected:
     _Fmtflags fmtflags= 0;
+    uint8_t fwidth = 0;
   };
 
   // \brief A C++ output stream class
@@ -84,13 +97,13 @@ namespace SABA
       return *this;
     }
 
-    /*OStream& operator << (const char *str)
+    OStream& print(const char *str)
     {
       while(*str)
         putch(*str++);
 
       return *this;
-    }*/
+    }
 
     OStream& operator << (const /*PROGMEM*/ char *str) //! serializes a string, use PSTR("xxx") as a string stored in FLASH
     {
@@ -106,12 +119,27 @@ namespace SABA
       return ((*pfn)(*this));
     }
 
+    OStream& operator<<(OStream& (*pfn)(OStream&,int))
+    {
+      return ((*pfn)(*this));
+    }
+
     OStream& operator<<( bool b ) //! serializes a bool value as 'true' or 'false'
     {
+      uint8_t fsize= 0;
+      if( fwidth != 0 )
+        fsize= b ? 4 : 5;
+
+      if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > fsize)
+        printFill(fwidth - fsize);
+
       if(b)
         *this << PSTR("true");
       else
         *this << PSTR("false");
+
+      if( (fmtflags & ios_base::adjust) == ios_base::left && fwidth > fsize)
+        printFill(fwidth - fsize);
 
       return *this;
     }
@@ -119,9 +147,19 @@ namespace SABA
     OStream& operator<<( uint8_t i ) //! serializes an 8 bit unsigned integer
     {
       if( (fmtflags & base) == hex )
-        printHex(i);
+      {
+        if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > 2)
+          printFill(fwidth - 2);
+      
+        printHex( i );
+      
+        if( (fmtflags & ios_base::adjust) == ios_base::left && fwidth > 2)
+          printFill(fwidth - 2);
+      }
       else
+      {
         printDec(i);
+      }
 
       return *this;
     }
@@ -129,9 +167,19 @@ namespace SABA
     OStream& operator<<( uint16_t i )  //! serializes an 16 bit unsigned integer
     {
       if( (fmtflags & base) == hex )
+      {
+        if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > 4)
+          printFill(fwidth - 4);
+        
         printHex(i);
+
+        if( (fmtflags & ios_base::adjust) == ios_base::left && fwidth > 4)
+          printFill(fwidth - 4);
+      }
       else
+      {
         printDec(i);
+      }
 
       return *this;
     }
@@ -139,15 +187,30 @@ namespace SABA
     OStream& operator<<( uint32_t i ) //! serializes an 32 bit unsigned integer
     {
       if( (fmtflags & base) == hex )
+      {
+        if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > 8)
+          printFill(fwidth - 8);
+
         printHex(i);
+        if( (fmtflags & ios_base::adjust) == ios_base::left && fwidth > 8)
+          printFill(fwidth - 8);
+      }
       else
+      {
         printDec(i);
+      }
 
       return *this;
     }
 
     private:
 
+    void printFill(uint8_t count)
+    {
+      for(;count != 0;count--)
+        putch(' ');
+    }
+    
     void printHex(uint8_t c) /*const*/
     {
       hexnibble( c >> 4 );
@@ -178,6 +241,20 @@ namespace SABA
 
     void printDec(uint8_t b) /*const*/
     {
+      uint8_t fsize= 0;
+      if( fwidth != 0 )
+      {
+        if(b >= 100)
+          fsize= 3;
+        else if(b >= 10)
+          fsize= 2;
+        else
+          fsize= 1;
+      }
+      
+      if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > fsize)
+        printFill(fwidth - fsize);
+        
       if( b >= 100 )
       {
         putch( '0' + ( b / 100 ) );
@@ -191,12 +268,33 @@ namespace SABA
       }
 
       putch( '0' + b );
+      
+      if( (fmtflags & ios_base::adjust) == ios_base::left && fwidth > fsize)
+        printFill(fwidth - fsize);
     }
 
     void printDec(uint16_t w) /*const*/
     {
       bool p= false;
       uint16_t div= 10000;
+
+      uint8_t fsize= 0;
+      if( fwidth != 0 )
+      {
+        if(w >= 10000)
+          fsize= 5;
+        else if(w >= 1000)
+          fsize= 4;
+        else if(w >= 100)
+          fsize= 3;
+        else if(w >= 10)
+          fsize= 2;
+        else
+          fsize= 1;
+      }
+      
+      if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > fsize)
+        printFill(fwidth - fsize);
 
       for(;div > 0; div /= 10)
       {
@@ -207,6 +305,9 @@ namespace SABA
           p= true;
         }
       }
+      
+      if( (fmtflags & ios_base::adjust) == ios_base::left && fwidth > fsize)
+        printFill(fwidth - fsize);
     }
 
     void printDec(uint32_t dw) /*const*/
@@ -214,6 +315,20 @@ namespace SABA
       bool p= false;
       uint32_t div= 1000000000;
 
+      uint8_t fsize= 0;
+      if( fwidth != 0 )
+      {
+        fsize= 10;
+        for(;div > 1; div /= 10,--fsize)
+          if(dw >= div)
+            break;
+            
+        div= 1000000000;
+      }
+      
+      if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > fsize)
+        printFill(fwidth - fsize);
+        
       for(;div > 0; div /= 10)
       {
         if( p || div == 1 || dw >= div)
@@ -223,6 +338,10 @@ namespace SABA
           p= true;
         }
       }
+       
+      if( (fmtflags & ios_base::adjust) == ios_base::left && fwidth > fsize)
+        printFill(fwidth - fsize);
+     
     }
   };
 
@@ -246,6 +365,30 @@ namespace SABA
   template<PUTCH p> OStream<p>& dec(OStream<p>& ostr)
   {
     ostr.setf( OStream<p>::dec, OStream<p>::base);
+
+    return ostr;
+  }
+
+  //! left adjust
+  template<PUTCH p> OStream<p>& left(OStream<p>& ostr)
+  {
+    ostr.setf( OStream<p>::left, OStream<p>::adjust);
+
+    return ostr;
+  }
+
+  //! right adjust
+  template<PUTCH p> OStream<p>& right(OStream<p>& ostr)
+  {
+    ostr.setf( OStream<p>::right, OStream<p>::adjust);
+
+    return ostr;
+  }
+
+  //! set width
+  template<PUTCH p> OStream<p>& setw(OStream<p>& ostr, const int w)
+  {
+    ostr.width( uint8_t(w) );
 
     return ostr;
   }
