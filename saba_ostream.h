@@ -164,6 +164,16 @@ namespace SABA
       return *this;
     }
 
+    OStream& operator<<( int8_t i ) //! serializes an 8 bit signed integer
+    {
+      if( (fmtflags & base) == hex )
+        this->operator <<(uint8_t(i));
+      else
+        printDec( uint8_t(i), true);
+
+      return *this;
+    }
+
     OStream& operator<<( uint16_t i )  //! serializes an 16 bit unsigned integer
     {
       if( (fmtflags & base) == hex )
@@ -180,6 +190,16 @@ namespace SABA
       {
         printDec(i);
       }
+
+      return *this;
+    }
+
+    OStream& operator<<( int16_t i ) //! serializes an 16 bit signed integer
+    {
+      if( (fmtflags & base) == hex )
+        this->operator <<(uint16_t(i));
+      else
+        printDec( uint16_t(i), true);
 
       return *this;
     }
@@ -202,6 +222,17 @@ namespace SABA
 
       return *this;
     }
+
+    OStream& operator<<( int32_t i ) //! serializes an 32 bit signed integer
+    {
+      if( (fmtflags & base) == hex )
+        this->operator <<(uint32_t(i));
+      else
+        printDec( uint32_t(i), true);
+
+      return *this;
+    }
+
 
     private:
 
@@ -239,9 +270,17 @@ namespace SABA
       putch( (char) c );
     }
 
-    void printDec(uint8_t b) /*const*/
+    void printDec(uint8_t b, bool signedInt = false)
     {
       uint8_t fsize= 0;
+      bool printMinus= false;
+
+      if( signedInt && int8_t(b) < 0)
+      {
+        printMinus= true;
+        b= uint8_t(- int8_t(b));
+      }
+
       if( fwidth != 0 )
       {
         if(b >= 100)
@@ -250,11 +289,17 @@ namespace SABA
           fsize= 2;
         else
           fsize= 1;
+
+        if( printMinus )
+          ++fsize;
       }
       
       if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > fsize)
         printFill(fwidth - fsize);
         
+      if( printMinus )
+        putch('-');
+
       if( b >= 100 )
       {
         putch( '0' + ( b / 100 ) );
@@ -273,12 +318,19 @@ namespace SABA
         printFill(fwidth - fsize);
     }
 
-    void printDec(uint16_t w) /*const*/
+    void printDec(uint16_t w, bool signedInt = false) /*const*/
     {
       bool p= false;
+      bool printMinus= false;
       uint16_t div= 10000;
-
       uint8_t fsize= 0;
+
+      if( signedInt && int16_t(w) < 0)
+      {
+        printMinus= true;
+        w= uint16_t(- int16_t(w));
+      }
+
       if( fwidth != 0 )
       {
         if(w >= 10000)
@@ -291,10 +343,16 @@ namespace SABA
           fsize= 2;
         else
           fsize= 1;
+
+        if( printMinus )
+          ++fsize;
       }
       
       if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > fsize)
         printFill(fwidth - fsize);
+
+      if( printMinus )
+        putch('-');
 
       for(;div > 0; div /= 10)
       {
@@ -310,25 +368,38 @@ namespace SABA
         printFill(fwidth - fsize);
     }
 
-    void printDec(uint32_t dw) /*const*/
+    void printDec(uint32_t dw, bool signedInt = false) /*const*/
     {
       bool p= false;
       uint32_t div= 1000000000;
-
       uint8_t fsize= 0;
+      bool printMinus= false;
+
+      if( signedInt && int16_t(dw) < 0)
+      {
+        printMinus= true;
+        dw= uint32_t(- int32_t(dw));
+      }
+
       if( fwidth != 0 )
       {
         fsize= 10;
         for(;div > 1; div /= 10,--fsize)
           if(dw >= div)
             break;
-            
+
+        if( printMinus )
+          ++fsize;
+
         div= 1000000000;
       }
       
       if( (fmtflags & ios_base::adjust) == ios_base::right && fwidth > fsize)
         printFill(fwidth - fsize);
         
+      if( printMinus )
+        putch('-');
+
       for(;div > 0; div /= 10)
       {
         if( p || div == 1 || dw >= div)
