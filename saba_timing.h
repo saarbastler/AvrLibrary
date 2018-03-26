@@ -65,6 +65,7 @@ namespace SABA
 
       bool isRunning()
       {
+        testDelay();
         return mode == Running;
       }
 
@@ -77,18 +78,23 @@ namespace SABA
           return false;
         }
         
-        if( mode == Running )
-        {
-          TYPE diff= ticker - startValue;
-
-          if(diff >= delay)
-            mode= Stopped;
-        }
+        testDelay();
 
         return (bool)mode;
       }
 
     private:
+
+      void testDelay()
+      {
+        if( mode == Running )
+        {
+          TYPE diff= ticker - startValue;
+
+          if(diff >= delay)
+          mode= Stopped;
+        }
+      }
 
       TYPE startValue;
       enum Mode
@@ -119,6 +125,7 @@ namespace SABA
 
       bool isRunning()
       {
+        testDelay();
         return mode == Running;
       }
 
@@ -131,18 +138,23 @@ namespace SABA
           return false;
         }
             
+        testDelay();
+
+        return (bool)mode;
+      }
+
+    private:
+
+      void testDelay()
+      {
         if( mode == Running )
         {
           TYPE diff= ticker - startValue;
 
           if(diff >= delay)
-            mode= Stopped;
+          mode= Stopped;
         }
-
-        return (bool)mode;
       }
-
-      private:
 
       TYPE startValue;
       TYPE delay;
