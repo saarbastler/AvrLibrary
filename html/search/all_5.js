@@ -7,5 +7,6 @@ var searchData=
   ['enableoutputcompbmatchinterrupt',['enableOutputCompBMatchInterrupt',['../class_s_a_b_a_1_1_timer8_1_1_t_c_p_w_m.html#a26f9cb04f569dfcac3e1bef98f9684dd',1,'SABA::Timer8::TCPWM::enableOutputCompBMatchInterrupt()'],['../class_s_a_b_a_1_1_timer16_1_1_t_c_p_w_m.html#a355a0e6d7394cbaa816c1fe466d18d59',1,'SABA::Timer16::TCPWM::enableOutputCompBMatchInterrupt()']]],
   ['enableoverflowinterrupt',['enableOverflowInterrupt',['../class_s_a_b_a_1_1_timer8_1_1_t_c_p_w_m.html#a4f4ac6585de570a968db349a0b9cc55d',1,'SABA::Timer8::TCPWM::enableOverflowInterrupt()'],['../class_s_a_b_a_1_1_timer16_1_1_t_c_p_w_m.html#abd0898a3ad03d5bd2e80d7f2a8a06a31',1,'SABA::Timer16::TCPWM::enableOverflowInterrupt()']]],
   ['endl',['endl',['../namespace_s_a_b_a.html#ae3f8a023f8685545750124e9efbae3a7',1,'SABA']]],
+  ['error_5freturn',['ERROR_RETURN',['../class_s_a_b_a_1_1_i2_c_1_1_lcd_text.html#a28cea0b1fc41a88581b4f13bbdc4cbe8',1,'SABA::I2C::LcdText']]],
   ['execute',['EXECUTE',['../namespace_s_a_b_a.html#a68f13a7efcda2a5c63563ae68d02aad4',1,'SABA']]]
 ];
