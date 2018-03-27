@@ -251,6 +251,7 @@ namespace SABA
           });
         });
       }
+
       bool putchDirect(uint8_t ch, Callback putchReturn = nullptr)
       {
         if((*master)())

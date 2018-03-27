@@ -46,7 +46,7 @@ namespace SABA
       if( waiting )
       {
         uint8_t diff= Timing::ticker - waitStart;
-        if( diff > DEBOUNCE_DELAY )
+        if( diff >= DEBOUNCE_DELAY )
         {
           waiting= false;
 
