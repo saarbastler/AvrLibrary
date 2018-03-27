@@ -13,6 +13,7 @@
 #ifndef SABA_AVR_H_
 #define SABA_AVR_H_
 
+#include <stdint.h>
 #include <saba_controller.h>
 
 namespace SABA

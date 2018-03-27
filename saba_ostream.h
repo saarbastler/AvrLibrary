@@ -12,6 +12,9 @@
 #ifndef SABA_OSTREAM_H_
 #define SABA_OSTREAM_H_
 
+#include <stdint.h>
+#include <avr/pgmspace.h>
+
 namespace SABA
 {
   //! the putch function needed for output
