@@ -11,14 +11,20 @@
 
 #include <saba_avr.h>
 
+#define VT100_CLEAR_SCREEN    "\x1b" "[2J"
+#define VT100_CURSOR_HOME     "\x1b" "[H"
+#define VT100_SET_POS(x,y)    "\x1b" "[" #y ";" #x "H"
+#define VT100_SAVE_CURSOR     "\x1b" "7"
+#define VT100_RESTORE_CURSOR  "\x1b" "8"
+
 namespace SABA
 {
   class VT100Target
   {
   public:
-    virtual void putch( const char ch ) = 0;
+    virtual void putchar( const char ch ) = 0;
     virtual void error( const char ch ) = 0;
-    virtual void backspace() = 0;
+    //virtual void backspace() = 0;
     virtual void cursorHome() = 0;
     virtual void clearScreen() = 0;
     virtual void setCursorPosition(uint8_t x, uint8_t y) = 0;
@@ -64,12 +70,12 @@ namespace SABA
               mode= ESCAPE;
               break;
 
-            case 8:
+            /*case 8:
               vt100Target->backspace();
-              break;
+              break;*/
 
             default:
-              vt100Target->putch(ch);
+              vt100Target->putchar(ch);
           }
       }
     }
@@ -81,16 +87,16 @@ namespace SABA
       bool p= false;
       if( i > 100 )
       {
-        vt100Target->putch( '0' + (i / 100));
+        vt100Target->putchar( '0' + (i / 100));
         i %= 100;
         p= true;
       }
       if( p || i > 10 )
       {
-        vt100Target->putch( '0' + (i / 10));
+        vt100Target->putchar( '0' + (i / 10));
         i %= 10;
       }
-      vt100Target->putch( '0' + i );
+      vt100Target->putchar( '0' + i );
     }
 
   private:
@@ -122,18 +128,18 @@ namespace SABA
           break;
 
         case '7':
-          vt100Target->saveCursor();
           mode= NORMAL;
+          vt100Target->saveCursor();
           break;
 
         case '8':
-          vt100Target->restoreCursor();
           mode= NORMAL;
+          vt100Target->restoreCursor();
           break;
 
         default:
-          vt100Target->error(ch);
           mode= NORMAL;
+          vt100Target->error(ch);
        }
     }
 
@@ -144,8 +150,8 @@ namespace SABA
       {
         if( a > 99 )
         {
-          vt100Target->error(ch);
           mode= NORMAL;
+          vt100Target->error(ch);
           return;
         }
 
@@ -165,8 +171,8 @@ namespace SABA
         {
           if( arg1 == 2 && ch == 'J' )
           {
-            vt100Target->clearScreen();
             mode= NORMAL;
+            vt100Target->clearScreen();
             return;
           }
           else if( ch == ';' )
@@ -178,13 +184,13 @@ namespace SABA
         }
         else if( ch == 'H')        
         {
-          vt100Target->setCursorPosition(arg1, arg2);
           mode= NORMAL;
+          vt100Target->setCursorPosition(arg2, arg1);
           return;
         }
 
-        vt100Target->error(ch);
         mode= NORMAL;
+        vt100Target->error(ch);
       }
     }
 
