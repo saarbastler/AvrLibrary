@@ -11,7 +11,6 @@
 
 #include "saba_timing.h"
 #include "saba_i2cm.h"
-#include "saba_fifo.h"
 
 // The I2C Input/Output Bits to the LCD Controller
 #define LCD_BUSYFLAG  7
@@ -25,11 +24,6 @@ extern void putch(uint8_t c);
 extern SABA::OStream <&putch> out;
 #endif
 
-// 4*20 Display DDAddress:
-// 00 .. 13
-// 40 .. 53
-// 14 .. 27
-// 54 .. 67
 namespace SABA
 {
   namespace I2C
@@ -38,33 +32,34 @@ namespace SABA
     /** 
     A template class to access a I2C Text LCD.
     @tparam FIFO_SIZE the putch Fifo size for non blocking printing
-    @tparam I2C_ADDRESS the I2C Device Adress, tpyicalle 0x4e
+    @tparam address the I2C Device Adress, tpyicalle 0x4e
     @tparam DIPLAY_LINES false for 1 line, false for 2 lines (see LCD Datasheet)
     @tparam FONT false = 5*7 font
     */
-    template<uint8_t FIFO_SIZE, uint8_t I2C_ADDRESS, bool DISPLAY_LINES=false,bool FONT=false>
+    template<bool DISPLAY_LINES=false,bool FONT=false>
     class LcdText
     {
     public:
 
-      LcdText(SABA::I2C::I2CMaster& master) : master(&master) { } //! Constructs the Driver, set the I2CMaster
+      LcdText(SABA::I2C::I2CMaster& master, uint8_t address) : master(&master), address(address) { } //! Constructs the Driver, set the I2CMaster
   
       typedef void(*ERROR_RETURN)(uint8_t errorCode);
       typedef void(*WRITE_RETURN)(void *env);
-      typedef void(*Callback)();
+      typedef void(*Callback)(void *env);
   
     /** Initialize the Display, function blocks only, if the I2CMaster is busy.
       * @param initReturn: callback in case of successful initialization.
       * @param errorReturn: callback in case of any Error, the error callback is stored and also called from other methods
       */
-      void initialize(Callback initReturn, ERROR_RETURN errorReturn)
+      void initialize(Callback initReturn, ERROR_RETURN errorReturn, void *callbackEnv = nullptr)
       {
         // wait, if I2C Master is busy
         while((*master)());
     
         context2= (void*)initReturn;
+        contextEnv= callbackEnv;
         this->errorReturn= errorReturn;
-        master->startWrite(I2C_ADDRESS, 1, &orMask,[](void *env, SABA::I2C::CMD* cmd)
+        master->startWrite(address, 1, &orMask,[](void *env, SABA::I2C::CMD* cmd)
         {
           LcdText *me= (LcdText*)env;
           me->delay( 100, [](LcdText* me)
@@ -100,7 +95,7 @@ namespace SABA
                                 {
                                   LcdText *me= (LcdText*)env;
                                   me->initialized= true;
-                                  ((Callback)me->context2)();
+                                  ((Callback)me->context2)( me->contextEnv );
                                 });
                               });
                             });
@@ -122,7 +117,7 @@ namespace SABA
       * @param callback: the optional callback, called on successful command
       * @return false, if I2C Hardware is busy, command will not be sent
       */
-      bool backlight( bool on, Callback callback= nullptr )
+      bool backlight( bool on, Callback callback= nullptr, void *callbackEnv = nullptr )
       {
         if((*master)())
           return false;
@@ -133,13 +128,14 @@ namespace SABA
           orMask &= ~_BV(LCD_BACKLIGHT);
     
         context2= (void*)callback;
-        return master->startWrite(I2C_ADDRESS, 1, &orMask, [](void *env, SABA::I2C::CMD* cmd)
+        contextEnv= callbackEnv;
+        return master->startWrite(address, 1, &orMask, [](void *env, SABA::I2C::CMD* cmd)
         {
           LcdText *me= (LcdText*)env;
           if( cmd->error != 0 )
             me->errorReturn(cmd->error);
           else if(me->context2 != nullptr)
-            ((Callback)me->context2)();        
+            ((Callback)me->context2)(me->contextEnv);        
         }, (void*)this);
       }
   
@@ -147,7 +143,7 @@ namespace SABA
       * @param callback: the optional callback, called on successful command
       * @return false, if I2C Hardware is busy, command will not be sent
       */
-      bool clearScreen(Callback callback= nullptr)
+      bool clearScreen(Callback callback= nullptr, void *callbackEnv = nullptr)
       {
         return command(1, callback);
       }
@@ -156,7 +152,7 @@ namespace SABA
       * @param callback: the optional callback, called on successful command
       * @return false, if I2C Hardware is busy, command will not be sent
       */
-      bool home(Callback callback= nullptr)
+      bool home(Callback callback= nullptr, void *callbackEnv = nullptr)
       {
         return command(2, callback);
       }
@@ -168,7 +164,7 @@ namespace SABA
       * @param callback: the optional callback, called on successful command
       * @return false, if I2C Hardware is busy, command will not be sent
       */
-      bool display(bool on, bool cursorOn, bool cursorBlink, Callback callback= nullptr)
+      bool display(bool on, bool cursorOn, bool cursorBlink, Callback callback= nullptr, void *callbackEnv = nullptr)
       {
         uint8_t data= 8;
         if(on)
@@ -178,7 +174,7 @@ namespace SABA
         if(cursorBlink)
           data |= 1;
     
-        return command(data, callback);
+        return command(data, callback, callbackEnv);
       }
   
     /** Set the Display Data Ram Address
@@ -186,9 +182,9 @@ namespace SABA
       * @param callback: the optional callback, called on successful command
       * @return false, if I2C Hardware is busy, command will not be sent
       */
-      bool ddram(uint8_t address, Callback callback= nullptr)
+      bool ddram(uint8_t address, Callback callback= nullptr, void *callbackEnv = nullptr)
       {
-        return command( 0x80 | address, callback);
+        return command( 0x80 | address, callback, callbackEnv);
       }
   
     /** Cyclic has to be called regularly, it is the internal state machine
@@ -201,9 +197,6 @@ namespace SABA
           delayCallback= nullptr;
           tmp(this);
         }
-    
-        if( initialized && !(*master)() && !fifo.isEmpty())
-          putchDirect(fifo.pop());
       }
   
     /** test, if the display has been initialized
@@ -214,31 +207,45 @@ namespace SABA
         return initialized;
       }
   
-    /** test, if the fifo is full
-      * @return true, if the putch fifo is full
-      */
-      bool isFull()
+      bool isMasterBusy()
       {
-        return fifo.isFull();
+        return (*master)();
       }
-  
-    /** putch a character on the current display position
-      * @param ch: the char to putch
-      * @return true, if the putch was successful or false, if the fifo was full
+
+    /** non blocking putch function
+      * @param ch: char to print
+      * @param callback: the optional callback, called on successful command
+      * @return false, if I2C Hardware is busy, command will not be sent
       */
-      bool putch(char ch)
+      bool putch(uint8_t ch, Callback putchReturn = nullptr, void *callbackEnv = nullptr)
       {
-        return fifo.push(ch);
+        if((*master)())
+        return false;
+          
+        context2= (void*)putchReturn;
+        contextEnv= callbackEnv;
+
+        orMask |= _BV(LCD_RS);
+        return write(ch, [](void *env)
+        {
+          LcdText *me= (LcdText*)env;
+          if(me->context2 != nullptr)
+          ((Callback)me->context2)( me->contextEnv );
+        });
       }
+        
+
   
     private:
 
-      bool command(uint8_t cmd, Callback callback)
+      bool command(uint8_t cmd, Callback callback, void *callbackEnv = nullptr)
       {
         if((*master)())
           return false;
     
         context2= (void*)callback;
+        contextEnv= callbackEnv;
+
         orMask &= ~_BV(LCD_RS);
     
         return write(cmd, [](void *env)
@@ -247,26 +254,11 @@ namespace SABA
           me->delay( 2, [](LcdText* me)
           {
             if(me->context2 != nullptr)
-            ((Callback)me->context2)();
+            ((Callback)me->context2)( me->contextEnv );
           });
         });
       }
 
-      bool putchDirect(uint8_t ch, Callback putchReturn = nullptr)
-      {
-        if((*master)())
-          return false;
-      
-        context2= (void*)putchReturn;
-        orMask |= _BV(LCD_RS);
-        return write(ch, [](void *env)
-        {
-          LcdText *me= (LcdText*)env;
-          if(me->context2 != nullptr)
-            ((Callback)me->context2)();
-        });
-      }
-    
       /*bool readBusy(BUSY_RETURN busyReturn)
       {
         if((*master)())
@@ -277,7 +269,7 @@ namespace SABA
         writeData[1]= orMask | _BV(LCD_BUSYFLAG) | _BV(LCD_RW) | _BV(LCD_ENABLE);
         context= (void*)busyReturn;
     
-        return master->startWriteAndRead(I2C_ADDRESS, 2, writeData, 1, &readData, [](void *env, SABA::I2C::CMD* cmd)
+        return master->startWriteAndRead(address, 2, writeData, 1, &readData, [](void *env, SABA::I2C::CMD* cmd)
         {
           LcdText *me= (LcdText*)env;
           if( cmd->error != 0 )
@@ -316,7 +308,7 @@ namespace SABA
     #endif
         context= (void*)writeReturn;
 
-        return master->startWrite(I2C_ADDRESS, 2, writeData, [](void *env, SABA::I2C::CMD* cmd)
+        return master->startWrite(address, 2, writeData, [](void *env, SABA::I2C::CMD* cmd)
         {
           LcdText *me= (LcdText*)env;
           if( cmd->error != 0 )
@@ -350,7 +342,7 @@ namespace SABA
     
         context= (void *)writeReturn;
     
-        return master->startWrite(I2C_ADDRESS, 4, writeData, [](void *env, SABA::I2C::CMD* cmd)
+        return master->startWrite(address, 4, writeData, [](void *env, SABA::I2C::CMD* cmd)
         {
           LcdText *me= (LcdText*)env;
           if( cmd->error != 0 )
@@ -369,13 +361,15 @@ namespace SABA
       SABA::I2C::I2CMaster *master;
       uint8_t writeData[4];
 
+      uint8_t address;
       uint8_t readData;
       uint8_t orMask = 0;
       bool initialized= false;
   
       void *context = nullptr;  // inner callback
       void *context2= nullptr;  // public method callback - init, putch, ...
-  
+      void *contextEnv= nullptr;
+
       ERROR_RETURN errorReturn = nullptr;
   
       typedef void (*DelayCallback)(LcdText *me);
@@ -391,7 +385,6 @@ namespace SABA
         singleDelay.start( ms);
       }
   
-      SABA::Fifo<char,uint8_t,FIFO_SIZE> fifo;
     };
 
   }
