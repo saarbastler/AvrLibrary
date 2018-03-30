@@ -16,20 +16,47 @@
 #define VT100_SET_POS(x,y)    "\x1b" "[" #y ";" #x "H"
 #define VT100_SAVE_CURSOR     "\x1b" "7"
 #define VT100_RESTORE_CURSOR  "\x1b" "8"
+// non standard:
+#define VT100_BACKLIGHT_ON    "\x1b" "B"
+#define VT100_BACKLIGHT_OFF   "\x1b" "b"
 
 namespace SABA
 {
   class VT100Target
   {
   public:
+    enum SpecialFunction
+    {
+      ClearScreen,    //! Clear the screen
+      CursorHome,     //! Cursor Home
+      SaveCursor,     //! Save Cursor Position
+      RestoreCursor,  //! Restore the cursor position
+      BacklightOn,    //! turn the backlight on
+      BacklightOff    //! turn the backlight off
+    };
+
+    /** execute the SpecialFunction
+      * @param sf: see enum
+      */
+    virtual void specialFunction(SpecialFunction sf) = 0;
+
+    /** print the char 
+      * @param ch: the char code: 00 .. FF
+      */
     virtual void putchar( const char ch ) = 0;
+
+    /** an error happened in ESC handling
+      * @param ch: the error char
+      */
     virtual void error( const char ch ) = 0;
-    //virtual void backspace() = 0;
-    virtual void cursorHome() = 0;
-    virtual void clearScreen() = 0;
+
+
+    /** set the cursor Position
+      * @param x: the x position, 0 .. Width-1
+      * @param y: the y position, 0 .. height-1
+      */
     virtual void setCursorPosition(uint8_t x, uint8_t y) = 0;
-    virtual void saveCursor() = 0;
-    virtual void restoreCursor() = 0;
+
   };
 
   /** VT100 emulating Terminal. Supports these Sequences (ESC = 0x1b)
@@ -70,34 +97,11 @@ namespace SABA
               mode= ESCAPE;
               break;
 
-            /*case 8:
-              vt100Target->backspace();
-              break;*/
-
             default:
               vt100Target->putchar(ch);
           }
       }
-    }
-
-  protected:
-
-    void putchDelegateInt(uint8_t i)
-    {
-      bool p= false;
-      if( i > 100 )
-      {
-        vt100Target->putchar( '0' + (i / 100));
-        i %= 100;
-        p= true;
-      }
-      if( p || i > 10 )
-      {
-        vt100Target->putchar( '0' + (i / 10));
-        i %= 10;
-      }
-      vt100Target->putchar( '0' + i );
-    }
+    }  
 
   private:
 
@@ -105,7 +109,7 @@ namespace SABA
     {
       if( ch == 'H' )
       {
-        vt100Target->cursorHome();
+        vt100Target->specialFunction(VT100Target::CursorHome);
         mode= 0;
         return;
       }
@@ -129,12 +133,22 @@ namespace SABA
 
         case '7':
           mode= NORMAL;
-          vt100Target->saveCursor();
+          vt100Target->specialFunction(VT100Target::SaveCursor);
           break;
 
         case '8':
           mode= NORMAL;
-          vt100Target->restoreCursor();
+          vt100Target->specialFunction(VT100Target::RestoreCursor);
+          break;
+
+        case 'B':
+          mode= NORMAL;
+          vt100Target->specialFunction(VT100Target::BacklightOn);
+          break;
+
+        case 'b':
+          mode= NORMAL;
+          vt100Target->specialFunction(VT100Target::BacklightOff);
           break;
 
         default:
@@ -172,7 +186,7 @@ namespace SABA
           if( arg1 == 2 && ch == 'J' )
           {
             mode= NORMAL;
-            vt100Target->clearScreen();
+            vt100Target->specialFunction(VT100Target::ClearScreen);
             return;
           }
           else if( ch == ';' )

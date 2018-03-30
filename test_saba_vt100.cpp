@@ -5,13 +5,10 @@
  *  Author: Joerg
  */ 
 
- #define SABA_TEST_SHORT_FORM
- #include <saba_test.h>
+#include <saba_test.h>
  
- #include "saba_vt100.h"
+#include "saba_vt100.h"
 
- //extern void putch(uint8_t c);
- //extern SABA::OStream <&putch> out;
 
 class VT100TargetMock : public SABA::VT100Target
 {
@@ -25,6 +22,8 @@ public:
   static constexpr uint8_t SAVE_CURSOR = 6;
   static constexpr uint8_t RESTORE_CURSOR = 7;
   static constexpr uint8_t ERROR= 8;
+  static constexpr uint8_t BACKLIGHT_OFF = 9;
+  static constexpr uint8_t BACKLIGHT_ON = 10;
 
   virtual void putchar( const char c )
   {    
@@ -40,22 +39,36 @@ public:
     ++count;
   }
 
-  /*virtual void backspace()
+  virtual void specialFunction(SpecialFunction sf)
   {
-    method= BACKSPACE;
     ++count;
-  }*/
+    switch(sf)
+    {
+      case VT100Target::CursorHome:
+      method= CURSOR_HOME;
+      break;
 
-  virtual void cursorHome()
-  {
-    method= CURSOR_HOME;
-    ++count;
-  }
+      case VT100Target::ClearScreen:
+      method= CLEAR_SCREEN;
+      break;
 
-  virtual void clearScreen()
-  {
-    method= CLEAR_SCREEN;
-    ++count;
+      case VT100Target::SaveCursor:
+      method= SAVE_CURSOR;
+      break;
+
+      case VT100Target::RestoreCursor:
+      method= RESTORE_CURSOR;
+      break;
+
+      case VT100Target::BacklightOn:
+      method= BACKLIGHT_ON;
+      break;
+
+      case VT100Target::BacklightOff:
+      method= BACKLIGHT_OFF;
+      break;
+
+    }
   }
 
   virtual void setCursorPosition( uint8_t x, uint8_t y)
@@ -66,31 +79,12 @@ public:
     ++count;
   }
 
-  virtual void saveCursor()
-  {
-    method= SAVE_CURSOR;
-    ++count;
-  }
-
-  virtual void restoreCursor()
-  {
-    method= RESTORE_CURSOR;
-    ++count;
-  }
-
-
   uint8_t count = 0;
   char ch = 0;
   uint8_t method = 0;
   uint8_t xarg;
   uint8_t yarg;
 }; 
-
-/*
-const char TEST_TXT1[] PROGMEM = "SABA_EQUAL( ";
-const char TEST_TXT2[] PROGMEM = " ) failed, line ";
-#define SABA_EQUAL( a, b ) if( (a) != (b) ) out << TEST_TXT1 << (a) << ',' << (b) << TEST_TXT2 << __LINE__ << SABA::endl
-*/
 
 void testVT100_putch()
 {
@@ -362,7 +356,7 @@ void testVT100_Error()
 
   vt100.putch('q');
   SABA_EQUAL( mock.method, VT100TargetMock::ERROR);
-  SABA_EQUAL( mock.ch, 'Q');
+  SABA_EQUAL( mock.ch, 'q');
   SABA_EQUAL( mock.count, 4);
 
   vt100.putch('h');
@@ -371,10 +365,52 @@ void testVT100_Error()
   SABA_EQUAL( mock.count, 5);
 }
 
+void testVT100_Backlight()
+{
+  VT100TargetMock mock;
+  SABA::VT100 vt100(&mock);
+
+  vt100.putch('b');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'b');
+  SABA_EQUAL( mock.count, 1);
+
+  vt100.putch('\x1b');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'b');
+  SABA_EQUAL( mock.count, 1);
+
+  vt100.putch('B');
+  SABA_EQUAL( mock.method, VT100TargetMock::BACKLIGHT_ON);
+  SABA_EQUAL( mock.ch, 'b');
+  SABA_EQUAL( mock.count, 2);
+
+  vt100.putch('B');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'B');
+  SABA_EQUAL( mock.count, 3);
+
+  vt100.putch('\x1b');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'B');
+  SABA_EQUAL( mock.count, 3);
+
+  vt100.putch('b');
+  SABA_EQUAL( mock.method, VT100TargetMock::BACKLIGHT_OFF);
+  SABA_EQUAL( mock.ch, 'B');
+  SABA_EQUAL( mock.count, 4);
+
+  vt100.putch('o');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'o');
+  SABA_EQUAL( mock.count, 5);
+
+}
+
 void testVT100()
 {
   out.width(0);
-  out << SABA::dec << PSTR("Starting VT100 Tests") << SABA::endl;
+  out << SABA::dec << PSTR("  Starting VT100 Tests") << SABA::endl;
 
   testVT100_putch();
   //testVT100_backspace();
@@ -383,6 +419,7 @@ void testVT100()
   testVT100_cursorPos();
   testVT100_saveAndRestoreCursor();
   testVT100_Error();
+  testVT100_Backlight();
 
-  out << SABA::dec << PSTR("VT100 Tests Finished") << SABA::endl;
+  out << SABA::dec << PSTR("  VT100 Tests Finished") << SABA::endl;
 }

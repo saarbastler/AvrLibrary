@@ -207,9 +207,9 @@ namespace SABA
         return initialized;
       }
   
-      bool isMasterBusy()
+      bool isBusy()
       {
-        return (*master)();
+        return (*master)() /*&& delayCallback != nullptr*/;
       }
 
     /** non blocking putch function
@@ -220,7 +220,7 @@ namespace SABA
       bool putch(uint8_t ch, Callback putchReturn = nullptr, void *callbackEnv = nullptr)
       {
         if((*master)())
-        return false;
+          return false;
           
         context2= (void*)putchReturn;
         contextEnv= callbackEnv;
@@ -230,7 +230,7 @@ namespace SABA
         {
           LcdText *me= (LcdText*)env;
           if(me->context2 != nullptr)
-          ((Callback)me->context2)( me->contextEnv );
+            ((Callback)me->context2)( me->contextEnv );
         });
       }
         
@@ -251,10 +251,10 @@ namespace SABA
         return write(cmd, [](void *env)
         {
           LcdText *me= (LcdText*)env;
-          me->delay( 2, [](LcdText* me)
+          me->delay( 3, [](LcdText* me)
           {
             if(me->context2 != nullptr)
-            ((Callback)me->context2)( me->contextEnv );
+              ((Callback)me->context2)( me->contextEnv );
           });
         });
       }
