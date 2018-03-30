@@ -46,6 +46,8 @@ namespace SABA
     // The macro ISR_INCREMENTUINT16 is an ISR increment method
     extern volatile uint16_t ticker;
 
+    typedef void(*Callback)(void *env);
+
     // delay a fixed time. TYPE is either uint8_t or uint16_t for max 255/65535 delay time
     // Can be re triggered or re started again.
     template<typename TYPE, TYPE delay>
@@ -104,6 +106,72 @@ namespace SABA
 
       Mode mode= Done;
     };
+
+    // delay a fixed time. TYPE is either uint8_t or uint16_t for max 255/65535 delay time
+    // Can be re triggered or re started again. Cyclic has to get called regularly.
+    template<typename TYPE, TYPE delay>
+    class CallbackDelayFixed
+    {
+      public:
+      void stop()
+      {
+        mode= Done;
+      }
+      
+      void start(Callback callback)
+      {
+        start( 0, callback);
+      }
+
+      void start(void *env, Callback callback_)
+      {
+        startValue= ticker;
+        mode= Running;
+
+        callback= callback_;
+        callbackEnv= env;
+      }
+
+      bool isRunning()
+      {
+        cyclic();
+        return mode == Running;
+      }
+
+      void cyclic()
+      {
+        if(mode == Running)
+        {
+          testDelay();
+          if( mode != Running)
+            callback(callbackEnv);
+        }
+      }
+
+      private:
+
+      void testDelay()
+      {
+        if( mode == Running )
+        {
+          TYPE diff= ticker - startValue;
+
+          if(diff >= delay)
+            mode= Stopped;
+        }
+      }
+
+      TYPE startValue;
+      enum Mode
+      {
+        Running= 0, Stopped= 1, Done= 2
+      };
+
+      Mode mode= Done;
+      Callback callback= nullptr;
+      void *callbackEnv= nullptr;
+    };
+    
     
     // delay a  time. TYPE is either uint8_t or uint16_t for max 255/65535 delay time
     // Can be re triggered or re started again.
@@ -165,7 +233,72 @@ namespace SABA
       };
 
       Mode mode= Done;
+    };
 
+    // delay a variable time. TYPE is either uint8_t or uint16_t for max 255/65535 delay time
+    // Can be re triggered or re started again. Cyclic has to get called regularly.
+    template<typename TYPE>
+    class CallbackDelay
+    {
+      public:
+      void stop()
+      {
+        mode= Done;
+      }
+
+      void start(TYPE delay, Callback callback)
+      {
+        start( delay, 0, callback);
+      }
+
+      void start(TYPE delay_, void *env, Callback callback_)
+      {
+        delay= delay_;
+        startValue= ticker;
+        mode= Running;
+
+        callback= callback_;
+        callbackEnv= env;
+      }
+
+      bool operator()()
+      {
+        return mode == Running;
+      }
+
+      void cyclic()
+      {
+        if(mode == Running)
+        {
+          testDelay();
+          if( mode != Running)
+            callback(callbackEnv);
+        }
+      }
+
+      private:
+
+      void testDelay()
+      {
+        if( mode == Running )
+        {
+          TYPE diff= ticker - startValue;
+
+          if(diff >= delay)
+            mode= Stopped;
+        }
+      }
+
+      TYPE startValue;
+      TYPE delay;
+      enum Mode
+      {
+        Running= 0, Stopped= 1, Done= 2
+      };
+
+      Mode mode= Done;
+      Callback callback= nullptr;
+      void *callbackEnv= nullptr;
     };
   }
 

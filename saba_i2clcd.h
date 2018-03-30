@@ -19,7 +19,7 @@
 #define LCD_RW        1
 #define LCD_RS        0
 
-#ifdef DEBUG_LcdText_MESSAGE
+#ifdef DEBUG_LCDTEXT_MESSAGE
 extern void putch(uint8_t c);
 extern SABA::OStream <&putch> out;
 #endif
@@ -62,23 +62,27 @@ namespace SABA
         master->startWrite(address, 1, &orMask,[](void *env, SABA::I2C::CMD* cmd)
         {
           LcdText *me= (LcdText*)env;
-          me->delay( 100, [](LcdText* me)
+          me->callbackDelay.start(100, env, [](void *env)
           {
+            LcdText *me= (LcdText*)env;
             me->writeNibble(0x30, [](void *env)
             {
               LcdText *me= (LcdText*)env;
-              me->delay(5, [](LcdText* me)
+              me->callbackDelay.start(5, env, [](void *env)
               {
+                LcdText *me= (LcdText*)env;
                 me->writeNibble(0x30, [](void *env)
                 {
                   LcdText *me= (LcdText*)env;
-                  me->delay(5, [](LcdText* me)
+                  me->callbackDelay.start(5, env, [](void *env)
                   {
+                    LcdText *me= (LcdText*)env;
                     me->writeNibble(0x30, [](void *env)
                     {
                       LcdText *me= (LcdText*)env;
-                      me->delay(1, [](LcdText* me)
+                      me->callbackDelay.start(1, env, [](void *env)
                       {
+                        LcdText *me= (LcdText*)env;
                         me->writeNibble(0x20, [](void *env)
                         {
                           LcdText *me= (LcdText*)env;                    
@@ -107,7 +111,7 @@ namespace SABA
                 });
               });
             });
-          } );
+          });
    
         },(void*)this);
       }
@@ -191,12 +195,7 @@ namespace SABA
       */
       void cyclic()
       {
-        if(delayCallback != nullptr && singleDelay())
-        {
-          DelayCallback tmp= delayCallback;
-          delayCallback= nullptr;
-          tmp(this);
-        }
+        callbackDelay.cyclic();
       }
   
     /** test, if the display has been initialized
@@ -209,7 +208,7 @@ namespace SABA
   
       bool isBusy()
       {
-        return (*master)() /*&& delayCallback != nullptr*/;
+        return (*master)() || callbackDelay();
       }
 
     /** non blocking putch function
@@ -233,9 +232,7 @@ namespace SABA
             ((Callback)me->context2)( me->contextEnv );
         });
       }
-        
 
-  
     private:
 
       bool command(uint8_t cmd, Callback callback, void *callbackEnv = nullptr)
@@ -251,8 +248,9 @@ namespace SABA
         return write(cmd, [](void *env)
         {
           LcdText *me= (LcdText*)env;
-          me->delay( 3, [](LcdText* me)
+          me->callbackDelay.start( 1, me, [](void *env)
           {
+            LcdText *me= (LcdText*)env;
             if(me->context2 != nullptr)
               ((Callback)me->context2)( me->contextEnv );
           });
@@ -303,7 +301,7 @@ namespace SABA
         writeData[0]= d | _BV(LCD_ENABLE);
         writeData[1]= d;
     
-    #ifdef DEBUG_LcdText_MESSAGE
+    #ifdef DEBUG_LCDTEXT_MESSAGE
       out << PSTR("N:") << writeData[0] << ' ' << writeData[1] << SABA::endl;
     #endif
         context= (void*)writeReturn;
@@ -335,7 +333,7 @@ namespace SABA
         writeData[2]= tmp | _BV(LCD_ENABLE);
         writeData[3]= tmp;
 
-    #ifdef DEBUG_LcdText_MESSAGE
+    #ifdef DEBUG_LCDTEXT_MESSAGE
       out << PSTR("B:") << d << ' ' << writeData[0] << ' ' << writeData[1] << ' ' << writeData[2] << ' ' << writeData[3] << SABA::endl;
     #endif
 
@@ -372,18 +370,7 @@ namespace SABA
 
       ERROR_RETURN errorReturn = nullptr;
   
-      typedef void (*DelayCallback)(LcdText *me);
-      DelayCallback delayCallback= nullptr;
-      SABA::Timing::SingleDelay<uint8_t> singleDelay;
-  
-      void delay(uint8_t ms, DelayCallback delayCallback_)
-      {
-    #ifdef DEBUG_LcdText_MESSAGE
-      out << PSTR("D:") << ms << SABA::endl;
-    #endif
-        delayCallback= delayCallback_;
-        singleDelay.start( ms);
-      }
+      SABA::Timing::CallbackDelay<uint8_t> callbackDelay;
   
     };
 
