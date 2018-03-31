@@ -20,11 +20,11 @@ namespace SABA
   class TurnEncoder
   {
   public:
-    typedef void (*TURN)(int8_t counter, int8_t increment );
+    typedef void (*TURN)(void *env, int8_t counter, int8_t increment );
 
-    typedef void (*CLICK)(bool down);
+    typedef void (*CLICK)(void *env, bool down);
 
-	  TurnEncoder( )//TURN turn, CLICK click ) : turnFunc(turn), clickFunc(click)
+	  TurnEncoder( void *env= nullptr ) : env(env)
     {
       SABA::PortPin<PIN_PHASE1,BIT_PHASE1> phase1;
       SABA::PortPin<PIN_PHASE2,BIT_PHASE2> phase2;
@@ -39,6 +39,11 @@ namespace SABA
 
       oldValue= inputs();
     };
+
+    void setEnv(void *env)
+    {
+      this->env= env;
+    }
 
     void cyclic(TURN turn, CLICK click)
     {
@@ -55,7 +60,7 @@ namespace SABA
             if( (oldValue & BUTTON) != (newValue & BUTTON))
             {
               if( click != nullptr) 
-                click( (newValue & BUTTON) == 0);
+                click( env, (newValue & BUTTON) == 0);
             }
             if( (oldValue & PHASE1) == 0 && (newValue & PHASE1) )
             {
@@ -103,7 +108,7 @@ namespace SABA
       counter += increment;
 
       if( turnFunc != nullptr )
-        turnFunc(counter, increment);
+        turnFunc(env, counter, increment);
     }    
     
     uint8_t waitStart;
@@ -116,6 +121,8 @@ namespace SABA
     uint8_t oldValue;
 
     int8_t counter;
+
+    void *env;
   }; //TurnEncoder
 
 }
