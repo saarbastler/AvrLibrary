@@ -149,7 +149,7 @@ namespace SABA
       */
       bool clearScreen(Callback callback= nullptr, void *callbackEnv = nullptr)
       {
-        return command(1, callback);
+        return command(1, callback, callbackEnv);
       }
 
     /** Cursor home
@@ -158,7 +158,7 @@ namespace SABA
       */
       bool home(Callback callback= nullptr, void *callbackEnv = nullptr)
       {
-        return command(2, callback);
+        return command(2, callback, callbackEnv);
       }
 
     /** Display options
@@ -235,7 +235,7 @@ namespace SABA
 
     private:
 
-      bool command(uint8_t cmd, Callback callback, void *callbackEnv = nullptr)
+      bool command(uint8_t cmd, Callback callback, void *callbackEnv)
       {
         if((*master)())
           return false;
