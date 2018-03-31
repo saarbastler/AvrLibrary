@@ -11,14 +11,15 @@
 
 #include <saba_avr.h>
 
-#define VT100_CLEAR_SCREEN    "\x1b" "[2J"
-#define VT100_CURSOR_HOME     "\x1b" "[H"
-#define VT100_SET_POS(x,y)    "\x1b" "[" #y ";" #x "H"
-#define VT100_SAVE_CURSOR     "\x1b" "7"
-#define VT100_RESTORE_CURSOR  "\x1b" "8"
+#define VT100_CLEAR_SCREEN        "\x1b" "[2J"
+#define VT100_CURSOR_HOME         "\x1b" "[H"
+#define VT100_SET_POS(x,y)        "\x1b" "[" #y ";" #x "H"
+#define VT100_SAVE_CURSOR         "\x1b" "7"
+#define VT100_RESTORE_CURSOR      "\x1b" "8"
 // non standard:
-#define VT100_BACKLIGHT_ON    "\x1b" "B"
-#define VT100_BACKLIGHT_OFF   "\x1b" "b"
+#define VT100_BACKLIGHT_ON        "\x1b" "B"
+#define VT100_BACKLIGHT_OFF       "\x1b" "b"
+#define VT100_CLEAR_SCREEN_HOME   "\x1b" "c"
 
 namespace SABA
 {
@@ -27,12 +28,13 @@ namespace SABA
   public:
     enum SpecialFunction
     {
-      ClearScreen,    //! Clear the screen
-      CursorHome,     //! Cursor Home
-      SaveCursor,     //! Save Cursor Position
-      RestoreCursor,  //! Restore the cursor position
-      BacklightOn,    //! turn the backlight on
-      BacklightOff    //! turn the backlight off
+      ClearScreen,      //! Clear the screen
+      CursorHome,       //! Cursor Home
+      SaveCursor,       //! Save Cursor Position
+      RestoreCursor,    //! Restore the cursor position
+      BacklightOn,      //! turn the backlight on
+      BacklightOff,     //! turn the backlight off
+      ClearScreenHome,  //! Clear Screen and Home
     };
 
     /** execute the SpecialFunction
@@ -149,6 +151,11 @@ namespace SABA
         case 'b':
           mode= NORMAL;
           vt100Target->specialFunction(VT100Target::BacklightOff);
+          break;
+
+        case 'c':
+          mode= NORMAL;
+          vt100Target->specialFunction(VT100Target::ClearScreenHome);
           break;
 
         default:
