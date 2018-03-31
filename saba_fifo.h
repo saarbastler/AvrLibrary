@@ -77,6 +77,30 @@ namespace SABA
       {
         return allocation >= size;
       }
+    
+    void dumpFifo()
+    {
+      out << PSTR("WI: ") << SABA::dec << writeIndex << PSTR(" RI: ") << readIndex << PSTR(" AL: ") << allocation << SABA::endl << SABA::hex;
+      for(INDEX_TYPE i=0;i < writeIndex;i+= 16)
+      {
+        for(INDEX_TYPE n=0;n < 16;n++ )
+          out << uint8_t(buffer[i+n]) << ' ';
+
+        out << ' ';
+        for(INDEX_TYPE n=0;n < 16;n++ )
+        {
+          char ch= buffer[i+n];
+          if( ch < ' ')
+          ch= '.';
+
+          out << ch;
+        }
+
+        out << SABA::endl;
+      }
+
+      readIndex= writeIndex= allocation= 0;
+    }
       
     private:
     
