@@ -20,6 +20,7 @@
 #define VT100_BACKLIGHT_ON        "\x1b" "B"
 #define VT100_BACKLIGHT_OFF       "\x1b" "b"
 #define VT100_CLEAR_SCREEN_HOME   "\x1b" "c"
+#define VT100_END_OF_LINE         "\x1b" "e"
 
 namespace SABA
 {
@@ -35,6 +36,7 @@ namespace SABA
       BacklightOn,      //! turn the backlight on
       BacklightOff,     //! turn the backlight off
       ClearScreenHome,  //! Clear Screen and Home
+      EndOfLine,        //! jump to the end of the current line (last char)
     };
 
     /** execute the SpecialFunction
@@ -156,6 +158,11 @@ namespace SABA
         case 'c':
           mode= NORMAL;
           vt100Target->specialFunction(VT100Target::ClearScreenHome);
+          break;
+
+        case 'e':
+          mode= NORMAL;
+          vt100Target->specialFunction(VT100Target::EndOfLine);
           break;
 
         default:

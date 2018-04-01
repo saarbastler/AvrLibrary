@@ -5,6 +5,8 @@
  *  Author: Joerg
  */ 
 
+#include "saba_pstr.h"
+
 #include <saba_test.h>
  
 #include "saba_vt100.h"
@@ -24,6 +26,8 @@ public:
   static constexpr uint8_t ERROR= 8;
   static constexpr uint8_t BACKLIGHT_OFF = 9;
   static constexpr uint8_t BACKLIGHT_ON = 10;
+  static constexpr uint8_t CLEAR_SCREEN_HOME = 11;
+  static constexpr uint8_t END_OF_LINE = 12;
 
   virtual void putchar( const char c )
   {    
@@ -68,6 +72,13 @@ public:
       method= BACKLIGHT_OFF;
       break;
 
+      case VT100Target::ClearScreenHome:
+      method= CLEAR_SCREEN_HOME;
+      break;
+
+      case VT100Target::EndOfLine:
+      method= END_OF_LINE;
+      break;
     }
   }
 
@@ -404,8 +415,61 @@ void testVT100_Backlight()
   SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
   SABA_EQUAL( mock.ch, 'o');
   SABA_EQUAL( mock.count, 5);
-
 }
+
+
+void testVT100_ClearScreenAndHome()
+{
+  VT100TargetMock mock;
+  SABA::VT100 vt100(&mock);
+
+  vt100.putch('C');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'C');
+  SABA_EQUAL( mock.count, 1);
+
+  vt100.putch('\x1b');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'C');
+  SABA_EQUAL( mock.count, 1);
+
+  vt100.putch('c');
+  SABA_EQUAL( mock.method, VT100TargetMock::CLEAR_SCREEN_HOME);
+  SABA_EQUAL( mock.ch, 'C');
+  SABA_EQUAL( mock.count, 2);
+
+  vt100.putch('D');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'D');
+  SABA_EQUAL( mock.count, 3);
+}
+
+void testVT100_EndOfLine()
+{
+  VT100TargetMock mock;
+  SABA::VT100 vt100(&mock);
+
+  vt100.putch('E');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'E');
+  SABA_EQUAL( mock.count, 1);
+
+  vt100.putch('\x1b');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'E');
+  SABA_EQUAL( mock.count, 1);
+
+  vt100.putch('e');
+  SABA_EQUAL( mock.method, VT100TargetMock::END_OF_LINE);
+  SABA_EQUAL( mock.ch, 'E');
+  SABA_EQUAL( mock.count, 2);
+
+  vt100.putch('Q');
+  SABA_EQUAL( mock.method, VT100TargetMock::PUTCH);
+  SABA_EQUAL( mock.ch, 'Q');
+  SABA_EQUAL( mock.count, 3);
+}
+
 
 void testVT100()
 {
@@ -413,13 +477,14 @@ void testVT100()
   out << SABA::dec << PSTR("  Starting VT100 Tests") << SABA::endl;
 
   testVT100_putch();
-  //testVT100_backspace();
   testVT100_clearScreen();
   testVT100_cursorHome();
   testVT100_cursorPos();
   testVT100_saveAndRestoreCursor();
   testVT100_Error();
   testVT100_Backlight();
+  testVT100_ClearScreenAndHome();
+  testVT100_EndOfLine();
 
   out << SABA::dec << PSTR("  VT100 Tests Finished") << SABA::endl;
 }
