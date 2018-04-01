@@ -303,13 +303,15 @@ namespace SABA
       if( printMinus )
         putch('-');
 
+      bool p= false;
       if( b >= 100 )
       {
         putch( '0' + ( b / 100 ) );
         b %= 100;
+        p= true;
       }
 
-      if( b >= 10 )
+      if( p || b >= 10 )
       {
         putch( '0' + (b / 10) );
         b %= 10;
