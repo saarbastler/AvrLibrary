@@ -199,6 +199,75 @@ namespace SABA
       return true;
     }
 
+    static bool timer(CmdReader<INDEX_TYPE,BUFFER_SIZE>& cmdReader)
+    {
+      char ch= cmdReader.nextCharIgnoreBlank();
+
+#if defined(TCCR0A)
+      if( ch == 0 || ch == '0' )
+          dumpTimer8('0', TCCR0A, TCCR0B, TCNT0, OCR0A, OCR0B );
+#endif
+
+#if defined(TCCR1A)
+      if( ch == 0 || ch == '1' )
+        dumpTimer('1', TCCR1A, TCCR1B, TCCR1C, TCNT1, OCR1A, OCR1B,
+#if defined(OCR1C)
+          OCR1C,
+#endif
+          ICR1 );
+#endif
+
+#if defined(TCCR2A)
+      if( ch == 0 || ch == '2' )
+        dumpTimer8('2', TCCR2A, TCCR2B, TCNT2, OCR2A, OCR2B );
+#endif
+
+
+#if defined(TCCR1A)
+      if( ch == 0 || ch == '3' )
+        dumpTimer('3', TCCR3A, TCCR3B, TCCR3C, TCNT3, OCR3A, OCR3B,
+#if defined(OCR3C)
+          OCR3C,
+#endif
+          ICR3 );
+#endif
+
+#if defined(TCCR4A)
+      if( ch == 0 || ch == '4' )
+      {
+        char ch= '4';
+        OStream<putch> ostr;
+        ostr << SABA::hex
+        << PSTR("TCCR") << ch << PSTR("A: ") << TCCR4A
+        << PSTR(" TCCR") << ch << PSTR("B: ") << TCCR4B
+        << PSTR(" TCCR") << ch << PSTR("C: ") << TCCR4C
+#ifdef TCCR4D
+        << PSTR(" TCCR") << ch << PSTR("d: ") << TCCR4D
+#endif
+        << PSTR(" TCNT") << ch << ':' << ' ' << TCNT4
+        << PSTR(" OCR") << ch << PSTR("A: ") << OCR4A
+        << PSTR(" OCR") << ch << PSTR("B: ") << OCR4B
+#if defined(OCR4C)
+        << PSTR(" OCR") << ch << PSTR("C: ") << OCR4C
+#endif
+#if defined(OCR4D)
+        << PSTR(" OCR") << ch << PSTR("D: ") << OCR4D
+#endif
+#ifdef ICR4
+        << PSTR(" ICR") << ch << PSTR(": ") << ICR4
+#endif
+        << SABA::endl;
+      }
+#endif
+
+#if defined(TCCR5A)
+      if( ch == 0 || ch == '5' )
+        dumpTimer('5', TCCR5A, TCCR5B, TCCR5C, TCNT5, OCR5A, OCR5B, OCR5C , ICR5 );
+#endif
+
+      return true;
+    }
+
   protected:
     static constexpr uint8_t MODE_SETBIT = 1;
     static constexpr uint8_t MODE_RESET = 2;
@@ -242,7 +311,40 @@ namespace SABA
         << PSTR(" PORT") << pch << ':' << port8.port()
         << endl;
     }
+
+    static void dumpTimer8( char ti, uint8_t tccra, uint8_t tccrb, uint8_t tcnt, uint8_t ocra, uint8_t ocrb)
+    {
+      OStream<putch> ostr;
+      ostr << SABA::hex
+        << PSTR("TCCR") << ti << PSTR("A: ") << tccra
+        << PSTR(" TCCR") << ti << PSTR("B: ") << tccrb
+        << PSTR(" TCNT") << ti << ':' << ' ' << tcnt
+        << PSTR(" OCR") << ti << PSTR("A: ") << ocra
+        << PSTR(" OCR") << ti << PSTR("B: ") << ocrb << SABA::endl;
+    }
+
+#if defined(OCR1C)
+    static void dumpTimer( char ti, uint8_t tccra, uint8_t tccrb, uint8_t tccrc, uint16_t tcnt, uint16_t ocra, uint16_t ocrb, uint16_t ocrc, uint16_t icr )
+#else
+    static void dumpTimer( char ti, uint8_t tccra, uint8_t tccrb, uint8_t tccrc, uint16_t tcnt, uint16_t ocra, uint16_t ocrb, uint16_t icr )
+#endif
+    {
+      OStream<putch> ostr;
+      ostr << SABA::hex
+      << PSTR("TCCR") << ti << PSTR("A: ") << tccra
+      << PSTR(" TCCR") << ti << PSTR("B: ") << tccrb
+      << PSTR(" TCCR") << ti << PSTR("C: ") << tccrc
+      << PSTR(" TCNT") << ti << ':' << ' ' << tcnt
+      << PSTR(" OCR") << ti << PSTR("A: ") << ocra
+      << PSTR(" OCR") << ti << PSTR("B: ") << ocrb
+#if defined(OCR1C)
+      << PSTR(" OCR") << ti << PSTR("C: ") << ocrc
+#endif
+      << PSTR(" ICR") << ti << PSTR(": ") << icr
+      << SABA::endl;
+    }
   };
+
 }
 
 #endif // SABA_MONITOR_H_
