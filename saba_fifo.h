@@ -80,7 +80,7 @@ namespace SABA
     
     void dumpFifo()
     {
-      out << PSTR("WI: ") << SABA::dec << writeIndex << PSTR(" RI: ") << readIndex << PSTR(" AL: ") << allocation << SABA::endl << SABA::hex;
+      out << PSTR("WI: ") << SABA::hex << writeIndex << PSTR(" RI: ") << readIndex << PSTR(" AL: ") << allocation << SABA::endl;
       for(INDEX_TYPE i=0;i < writeIndex;i+= 16)
       {
         for(INDEX_TYPE n=0;n < 16;n++ )
@@ -91,7 +91,7 @@ namespace SABA
         {
           char ch= buffer[i+n];
           if( ch < ' ')
-          ch= '.';
+            ch= '.';
 
           out << ch;
         }
