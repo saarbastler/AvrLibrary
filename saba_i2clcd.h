@@ -248,7 +248,7 @@ namespace SABA
         return write(cmd, [](void *env)
         {
           LcdText *me= (LcdText*)env;
-          me->callbackDelay.start( 1, me, [](void *env)
+          me->callbackDelay.start( 3, me, [](void *env)
           {
             LcdText *me= (LcdText*)env;
             if(me->context2 != nullptr)
