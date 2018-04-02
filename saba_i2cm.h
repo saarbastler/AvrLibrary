@@ -13,10 +13,12 @@
 
 #include <saba_avr.h>
 
-//#ifdef DEBUG_I2C_MESSAGE
+#ifdef DEBUG_I2C_MESSAGE
+#include <saba_ostream.h>
+
 extern void putch(uint8_t c);
 extern SABA::OStream <&putch> out;
-//#endif
+#endif
 
 namespace SABA
 {
