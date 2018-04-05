@@ -223,7 +223,7 @@ namespace SABA
 #endif
 
 
-#if defined(TCCR1A)
+#if defined(TCCR3A)
       if( ch == 0 || ch == '3' )
         dumpTimer('3', TCCR3A, TCCR3B, TCCR3C, TCNT3, OCR3A, OCR3B,
 #if defined(OCR3C)
